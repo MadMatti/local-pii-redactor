@@ -129,12 +129,12 @@ policy covers every observed source label.
 
 ## 7. Staged QLoRA experiments
 
-- [ ] **ML-060 — Run 8-layer/rank-8/768 baseline experiment.** Establish the
+- [x] **ML-060 — Run 8-layer/rank-8/768 baseline experiment.** Establish the
   first meaningful adapter on 5k–10k records.
-- [ ] **ML-061 — Test 16 LoRA layers.** Only proceed if memory remains safe.
-- [ ] **ML-062 — Test rank 16.** Compare only after holding dataset and other
+- [x] **ML-061 — Test 16 LoRA layers.** Only proceed if memory remains safe.
+- [x] **ML-062 — Test rank 16.** Compare only after holding dataset and other
   variables fixed.
-- [ ] **ML-063 — Test sequence length 1024.** Measure truncation improvement,
+- [x] **ML-063 — Test sequence length 1024.** Measure truncation improvement,
   memory, throughput, and quality.
 - [ ] **ML-064 — Train the main candidate.** Use the winning small experiment on
   the 15k–25k dataset.

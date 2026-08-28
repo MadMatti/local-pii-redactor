@@ -58,3 +58,7 @@ template. The smoke adapter's 0.0637 exact recall does not pass the quality gate
 so it is retained only as pipeline evidence and cannot be promoted. The
 authorized V0 screens will determine whether additional training restores
 recall while preserving strict output validity.
+
+All four authorized V0 screens completed on 2026-08-28. Decision record 0003
+selects 16 layers, rank 8, and the 768-token complete-record view for a
+non-overwriting one-epoch V0 promotion run.

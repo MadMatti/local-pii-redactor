@@ -23,3 +23,13 @@ commit, configuration and dataset hashes, duration, losses, throughput, peak
 memory, logs, and adapter checksums. It refuses to overwrite prior evidence.
 Before allocating Metal memory, it renders every chat record and fails if right
 truncation could remove any assistant target.
+
+The four V0 screening configurations each run for 625 iterations so layer,
+rank, and context effects can be compared before a longer run. The 768-token
+screens use the deterministic complete-record view at
+`data/processed/length_views/v0-768`; the 1024-token screen uses all V0 rows.
+
+After the frozen comparison selects an architecture,
+`v0-selected-l16-r8-768-full.yaml` runs one pass over all 4,819 complete V0
+training records. It writes to a new adapter directory and does not resume or
+overwrite any screening adapter.
