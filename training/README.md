@@ -21,3 +21,5 @@ python scripts/model/run_training.py \
 The wrapper streams the normal MLX-LM progress output while recording the Git
 commit, configuration and dataset hashes, duration, losses, throughput, peak
 memory, logs, and adapter checksums. It refuses to overwrite prior evidence.
+Before allocating Metal memory, it renders every chat record and fails if right
+truncation could remove any assistant target.

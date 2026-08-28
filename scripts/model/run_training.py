@@ -128,6 +128,62 @@ def _validate_inputs(config: dict[str, Any], run_dir: Path) -> tuple[Path, Path]
     return data_path, adapter_path
 
 
+def _sequence_length_preflight(
+    config: dict[str, Any], data_path: Path
+) -> dict[str, Any]:
+    """Fail before Metal allocation if right truncation could remove targets."""
+
+    from transformers import AutoTokenizer
+
+    model_path = PROJECT_ROOT / config["model"]
+    tokenizer = AutoTokenizer.from_pretrained(
+        str(model_path), local_files_only=True, trust_remote_code=False
+    )
+    maximum_allowed = int(config["max_seq_length"])
+    output: dict[str, Any] = {}
+    for split in ("train", "valid", "test"):
+        full_max = 0
+        prompt_max = 0
+        full_too_long = 0
+        prompt_too_long = 0
+        records = 0
+        for line in (data_path / f"{split}.jsonl").open(encoding="utf-8"):
+            record = json.loads(line)
+            messages = record["messages"]
+            full_length = len(
+                tokenizer.apply_chat_template(
+                    messages, tokenize=True, return_dict=False
+                )
+            )
+            prompt_length = len(
+                tokenizer.apply_chat_template(
+                    messages[:-1],
+                    tokenize=True,
+                    add_generation_prompt=True,
+                    return_dict=False,
+                )
+            )
+            records += 1
+            full_max = max(full_max, full_length)
+            prompt_max = max(prompt_max, prompt_length)
+            full_too_long += full_length > maximum_allowed
+            prompt_too_long += prompt_length >= maximum_allowed
+        output[split] = {
+            "records": records,
+            "full_sequence_max": full_max,
+            "prompt_max": prompt_max,
+            "full_sequence_over_limit": full_too_long,
+            "prompt_at_or_over_limit": prompt_too_long,
+        }
+        if full_too_long or prompt_too_long:
+            raise TrainingRunError(
+                f"{split}: max_seq_length={maximum_allowed} would truncate "
+                f"{full_too_long} complete sequences or remove targets from "
+                f"{prompt_too_long} prompts"
+            )
+    return output
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
@@ -144,6 +200,7 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(config, dict):
             raise TrainingRunError("configuration must be a YAML object")
         data_path, adapter_path = _validate_inputs(config, run_dir)
+        sequence_preflight = _sequence_length_preflight(config, data_path)
         run_dir.mkdir(parents=True, exist_ok=True)
         started = datetime.now(UTC)
         dataset_hashes = {
@@ -162,6 +219,7 @@ def main(argv: list[str] | None = None) -> int:
             "dataset_manifest_sha256": _sha256(
                 PROJECT_ROOT / "data/processed/manifest.json"
             ),
+            "sequence_length_preflight": sequence_preflight,
             "platform": platform.platform(),
             "machine": platform.machine(),
             "python": platform.python_version(),

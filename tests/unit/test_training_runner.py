@@ -1,4 +1,12 @@
-from scripts.model.run_training import _parse_log
+import json
+
+import pytest
+
+from scripts.model.run_training import (
+    TrainingRunError,
+    _parse_log,
+    _sequence_length_preflight,
+)
 
 
 def test_training_log_parser_extracts_losses_throughput_and_peak_memory() -> None:
@@ -13,3 +21,39 @@ Iter 100: Train loss 0.500, Learning Rate 1.000e-05, It/sec 0.900, Tokens/sec 14
     assert parsed["final_validation_loss"] == 0.75
     assert parsed["peak_memory_gb"] == 4.5
     assert len(parsed["train_reports"]) == 2
+
+
+class _FakeTokenizer:
+    def apply_chat_template(self, messages, **kwargs):
+        del kwargs
+        length = sum(len(message["content"]) for message in messages)
+        return list(range(length))
+
+
+def test_sequence_preflight_rejects_target_truncation(tmp_path, monkeypatch) -> None:
+    data_path = tmp_path / "data"
+    data_path.mkdir()
+    record = {
+        "messages": [
+            {"role": "system", "content": ""},
+            {"role": "user", "content": "12345"},
+            {"role": "assistant", "content": "xx"},
+        ]
+    }
+    for split in ("train", "valid", "test"):
+        (data_path / f"{split}.jsonl").write_text(
+            json.dumps(record) + "\n", encoding="utf-8"
+        )
+    monkeypatch.setattr(
+        "transformers.AutoTokenizer.from_pretrained",
+        lambda *args, **kwargs: _FakeTokenizer(),
+    )
+
+    safe = _sequence_length_preflight(
+        {"model": "model", "max_seq_length": 7}, data_path
+    )
+    assert safe["train"]["full_sequence_max"] == 7
+    with pytest.raises(TrainingRunError, match="would truncate"):
+        _sequence_length_preflight(
+            {"model": "model", "max_seq_length": 6}, data_path
+        )
