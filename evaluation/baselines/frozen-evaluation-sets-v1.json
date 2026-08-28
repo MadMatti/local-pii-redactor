@@ -1,0 +1,26 @@
+{
+  "dataset_build": "prepared-dataset-v1",
+  "sets": {
+    "main_test": {
+      "path": "data/processed/test.jsonl",
+      "records": 2000,
+      "sha256": "eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f"
+    },
+    "smoke_test": {
+      "path": "data/processed/stages/smoke/test.jsonl",
+      "records": 100,
+      "sha256": "8c93a9dc0bcb3bca2c202e7979b465241af3b55d67d3bafcd11fbb4d05639fb7"
+    },
+    "v0_1024_test": {
+      "path": "data/processed/stages/v0/test.jsonl",
+      "records": 500,
+      "sha256": "57c067771cd452e3bc483767ad3a378faccd107ce700c5c83618a32b02ad3384"
+    },
+    "v0_768_test": {
+      "path": "data/processed/length_views/v0-768/test.jsonl",
+      "records": 481,
+      "sha256": "108f5b1e569fe2deda1463bc078d76184977c50c27fcc3b31972e683b5ded858"
+    }
+  },
+  "status": "frozen"
+}

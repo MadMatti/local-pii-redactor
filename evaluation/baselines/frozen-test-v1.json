@@ -1,0 +1,10 @@
+{
+  "dataset_build": "prepared-dataset-v1",
+  "dataset_path": "data/processed/test.jsonl",
+  "dataset_sha256": "eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f",
+  "prompt_version": "pii-extraction-v1",
+  "records": 2000,
+  "source_revision": "e06eb1499ca8d54470f085021cd8e54f9efac7fd",
+  "status": "frozen",
+  "tokenizer_path": "models/base-qwen3-1.7b-4bit"
+}

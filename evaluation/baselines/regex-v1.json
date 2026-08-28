@@ -1,0 +1,24 @@
+{
+  "version": "regex-baseline-v1",
+  "supported_labels": [
+    "ADDRESS",
+    "BANK_ACCOUNT",
+    "CREDIT_CARD",
+    "CUSTOMER_ID",
+    "DATE_OF_BIRTH",
+    "EMAIL",
+    "EMPLOYEE_ID",
+    "IP_ADDRESS",
+    "MEDICAL_ID",
+    "NATIONAL_ID",
+    "PHONE_NUMBER",
+    "USERNAME",
+    "VEHICLE_ID"
+  ],
+  "unsupported_labels": ["PERSON_NAME"],
+  "notes": [
+    "Context-dependent expressions are deliberately conservative.",
+    "This baseline is a reference point, not the production redactor.",
+    "All returned text is copied from exact regex match spans."
+  ]
+}

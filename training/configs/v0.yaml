@@ -1,5 +1,5 @@
 model: models/base-qwen3-1.7b-4bit
-data: data/processed/stages/v0
+data: data/processed/length_views/v0-768
 train: true
 fine_tune_type: lora
 seed: 42
@@ -12,7 +12,7 @@ learning_rate: 0.00001
 steps_per_report: 10
 steps_per_eval: 100
 save_every: 100
-adapter_path: models/adapters/v0
+adapter_path: models/adapters/v0-l8-r8-768
 max_seq_length: 768
 grad_checkpoint: true
 mask_prompt: true

@@ -29,6 +29,7 @@ data/processed/*.json
 data/processed/full_source/
 data/processed/stages/
 data/processed/validation/
+data/processed/length_views/
 data/calibration/*.txt
 data/calibration/*.json
 data/long_documents/generated/

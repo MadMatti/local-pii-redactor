@@ -267,16 +267,31 @@ def _token_statistics(
     output: dict[str, Any] = {}
     for split, split_records in records.items():
         lengths: list[int] = []
+        prompt_lengths: list[int] = []
         for record in split_records:
             token_ids = tokenizer.apply_chat_template(
                 record["messages"], tokenize=True, return_dict=False
             )
             lengths.append(len(token_ids))
+            prompt_ids = tokenizer.apply_chat_template(
+                record["messages"][:-1],
+                tokenize=True,
+                add_generation_prompt=True,
+                return_dict=False,
+            )
+            prompt_lengths.append(len(prompt_ids))
         output[split] = {
             **_percentiles(lengths),
             "at_or_above_768": sum(length >= 768 for length in lengths),
             "at_or_above_1024": sum(length >= 1024 for length in lengths),
             "at_or_above_1280": sum(length >= 1280 for length in lengths),
+            "prompt_at_or_above_768": sum(
+                length >= 768 for length in prompt_lengths
+            ),
+            "prompt_at_or_above_1024": sum(
+                length >= 1024 for length in prompt_lengths
+            ),
+            "prompt_max": max(prompt_lengths, default=0),
         }
     return output
 
@@ -411,7 +426,9 @@ def validate_prepared_datasets(
     for split, item in statistics["token_lengths"].items():
         lines.append(
             f"- **{split}:** P95 {item['p95']}, P99 {item['p99']}, max {item['max']}; "
-            f">=768: {item['at_or_above_768']}, >=1024: {item['at_or_above_1024']}"
+            f">=768: {item['at_or_above_768']}, >=1024: {item['at_or_above_1024']}; "
+            f"prompt max {item['prompt_max']}, prompt >=768: "
+            f"{item['prompt_at_or_above_768']}"
         )
     if warnings:
         lines.extend(["", "## Warnings", ""])

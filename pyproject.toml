@@ -23,6 +23,11 @@ data = [
 dev = [
     "pytest==9.1.1",
 ]
+training = [
+    "mlx==0.32.2",
+    "mlx-lm==0.31.3",
+    "PyYAML==6.0.3",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -30,7 +35,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 addopts = "-ra"
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 markers = [
     "network: requires internet access and downloads remote data",
     "mlx: requires Apple Metal access and MLX",

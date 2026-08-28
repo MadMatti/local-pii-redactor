@@ -103,16 +103,16 @@ Suggested minimum review sample:
 
 ## 5. Metric and model-selection decisions
 
-- [ ] **H-040 — Approve the metric hierarchy.** Recommended order: exact
+- [x] **H-040 — Approve the metric hierarchy.** Recommended order: exact
   recall, complete-document recall, precision, validity, hardware performance,
   then size.
-- [ ] **H-041 — Set a baseline-relative training gate.** Define how much the
+- [x] **H-041 — Set a baseline-relative training gate.** Define how much the
   adapter must improve over untouched Qwen before model packaging begins.
-- [ ] **H-042 — Set quantization tolerance.** Define the largest acceptable
+- [x] **H-042 — Set quantization tolerance.** Define the largest acceptable
   recall and complete-document-recall loss relative to BF16.
 - [ ] **H-043 — Set boundary-recall tolerance.** Define acceptable loss for
   entities near or across chunk boundaries.
-- [ ] **H-044 — Approve the first real training configuration.** Review the
+- [x] **H-044 — Approve the first real training configuration.** Review the
   smoke-run evidence before starting a long run.
 - [ ] **H-045 — Approve the final adapter.** Base the decision on frozen
   validation/test metrics and error analysis, not training loss alone.
@@ -127,7 +127,7 @@ Suggested minimum review sample:
   memory-heavy applications, and confirm sufficient disk space.
 - [ ] **H-051 — Observe smoke training.** Confirm finite loss, manageable memory
   pressure, validation execution, and adapter creation.
-- [ ] **H-052 — Authorize staged experiments.** Do not begin the largest run
+- [x] **H-052 — Authorize staged experiments.** Do not begin the largest run
   until smaller experiments demonstrate value.
 - [ ] **H-053 — Preserve experiment evidence.** Do not overwrite adapters,
   predictions, logs, or manifests from earlier runs.
