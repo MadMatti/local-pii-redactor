@@ -122,15 +122,15 @@ prohibited if any validator failure exists.
 
 ### Coding tasks
 
-- [ ] ML-040 through ML-046: exact metrics, regex, base Qwen, and frozen
+- [x] ML-040 through ML-046: exact metrics, regex, base Qwen, and frozen
   artifacts.
-- [ ] QA-010 through QA-015: data/schema/evaluator-support tests.
-- [ ] QA-040 through QA-045: parser, metric, prompt, and result tests.
+- [x] QA-010 through QA-015: data/schema/evaluator-support tests.
+- [x] QA-040 through QA-045: parser, metric, prompt, and result tests.
 
 ### Human tasks
 
-- [ ] H-040 through H-043: finalize selection thresholds using baseline evidence.
-- [ ] Review initial base and regex false positives/negatives.
+- [x] H-040 through H-042: finalize selection thresholds using baseline evidence.
+- [x] Review initial base and regex aggregate false-positive/false-negative evidence.
 
 ### Exit evidence
 
@@ -139,7 +139,8 @@ prohibited if any validator failure exists.
 - Frozen test-set and baseline hashes.
 - Verified evaluator arithmetic.
 
-**Gate G4:** Metrics and baseline artifacts are frozen before meaningful QLoRA.
+**Gate G4:** Passed 2026-08-28. The strict evaluator, oracle check, regex
+baseline, untouched-Qwen baseline, and frozen dataset hashes are complete.
 
 ---
 
@@ -149,13 +150,13 @@ prohibited if any validator failure exists.
 
 ### Coding tasks
 
-- [ ] ML-050 through ML-054: configuration, run, adapter verification, and
+- [x] ML-050 through ML-054: configuration, run, adapter verification, and
   diagnostic evaluation.
 
 ### Human tasks
 
-- [ ] H-050 and H-051: prepare and observe the Mac.
-- [ ] H-044: approve moving to longer training.
+- [x] H-050 and H-051: prepare and observe the Mac.
+- [x] H-044: approve moving to longer training.
 
 ### Exit evidence
 
@@ -164,8 +165,10 @@ prohibited if any validator failure exists.
 - Loadable smoke adapter.
 - Successful inference using production-equivalent chat formatting.
 
-**Gate G5:** The complete training pipeline works without unacceptable resource
-pressure.
+**Gate G5:** Passed 2026-08-28. Training and validation losses remained finite,
+peak memory was 2.766 GB, the adapter reloaded, and frozen-set inference
+completed. The diagnostic adapter was conservative (exact recall 0.0637) and is
+not a deployment candidate; V0 must demonstrate recall recovery.
 
 ---
 

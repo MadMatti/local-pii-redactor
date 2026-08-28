@@ -42,3 +42,19 @@ right truncation would remove their assistant targets. Smoke therefore uses
 1024 tokens. The 768-token layer/rank experiments use a deterministic view that
 retains only complete rendered chats at or below 768; the 1024 context
 experiment uses full V0.
+
+## Execution evidence
+
+Gate G4 passed on 2026-08-28. The oracle scored perfectly on all strict metrics.
+On the frozen 2,000-record test set, regex achieved 0.3265 exact recall and
+0.3994 F1; untouched Qwen achieved 0.3506 exact recall and 0.4196 F1. The
+untouched model's 0.6405 schema-valid rate and 0.6580 PII-free false-positive
+rate confirm that it is not deployable without adaptation.
+
+Gate G5 passed on 2026-08-28. The 100-iteration smoke run completed with finite
+0.324 train loss, 0.301 validation loss, and 2.766 GB peak memory. Its adapter
+reloaded and generated the full frozen smoke set using the evaluation chat
+template. The smoke adapter's 0.0637 exact recall does not pass the quality gate,
+so it is retained only as pipeline evidence and cannot be promoted. The
+authorized V0 screens will determine whether additional training restores
+recall while preserving strict output validity.

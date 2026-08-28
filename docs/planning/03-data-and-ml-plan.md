@@ -98,33 +98,33 @@ policy covers every observed source label.
 
 ## 5. Evaluation framework and frozen baselines
 
-- [ ] **ML-040 — Implement exact occurrence matching.** Match type and exact
+- [x] **ML-040 — Implement exact occurrence matching.** Match type and exact
   source occurrence, treating duplicates as distinct instances.
-- [ ] **ML-041 — Implement metrics.** Report micro/macro precision, recall, F1,
+- [x] **ML-041 — Implement metrics.** Report micro/macro precision, recall, F1,
   per-class results, complete-document recall, and PII-free false-positive rate.
-- [ ] **ML-042 — Report validity.** Measure raw JSON validity, schema validity,
+- [x] **ML-042 — Report validity.** Measure raw JSON validity, schema validity,
   unknown labels, hallucinated substrings, and missing repeated occurrences.
-- [ ] **ML-043 — Add relaxed diagnostics.** Optional overlap or partial-text
+- [x] **ML-043 — Add relaxed diagnostics.** Optional overlap or partial-text
   metrics may help analysis but must not replace strict metrics.
-- [ ] **ML-044 — Implement regex baseline.** Cover syntactically constrained
+- [x] **ML-044 — Implement regex baseline.** Cover syntactically constrained
   labels and make unsupported categories explicit.
-- [ ] **ML-045 — Evaluate untouched Qwen.** Run the frozen prompt/test set and
+- [x] **ML-045 — Evaluate untouched Qwen.** Run the frozen prompt/test set and
   save raw and parsed predictions with a manifest.
-- [ ] **ML-046 — Freeze test artifacts.** Record hashes so later data or prompt
+- [x] **ML-046 — Freeze test artifacts.** Record hashes so later data or prompt
   changes cannot silently alter the comparison.
 
 ## 6. QLoRA smoke run
 
-- [ ] **ML-050 — Create smoke configuration.** Start with batch 1, accumulation
-  8, eight layers, rank 8, 768 sequence length, prompt masking, gradient
+- [x] **ML-050 — Create smoke configuration.** Start with batch 1, accumulation
+  8, eight layers, rank 8, 1024 sequence length, prompt masking, gradient
   checkpointing, and about 100 iterations.
-- [ ] **ML-051 — Capture resource metrics.** Save peak memory, throughput,
+- [x] **ML-051 — Capture resource metrics.** Save peak memory, throughput,
   training/validation loss, and duration.
-- [ ] **ML-052 — Verify adapter artifacts.** Confirm configuration and weights
+- [x] **ML-052 — Verify adapter artifacts.** Confirm configuration and weights
   can be loaded after the process exits.
-- [ ] **ML-053 — Verify generation parity.** Use the same chat template and
+- [x] **ML-053 — Verify generation parity.** Use the same chat template and
   prompt rendering as base evaluation.
-- [ ] **ML-054 — Evaluate the smoke adapter.** Quality is diagnostic; success is
+- [x] **ML-054 — Evaluate the smoke adapter.** Quality is diagnostic; success is
   a functioning end-to-end pipeline with finite loss.
 
 ## 7. Staged QLoRA experiments
