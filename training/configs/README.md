@@ -9,6 +9,8 @@
 - `v0-l8-r8-1024.yaml`: holds layers and rank fixed while testing 1024 tokens.
 - `v1.yaml`: main candidate on the 20,000-record stage; values remain subject
   to evidence from smoke and V0.
+- `v1-selected-l16-r8-768.yaml`: one complete pass over the deterministic main
+  768-token view using the promoted 16-layer/rank-8 architecture.
 
 These are starting configurations, not authorization to train. Copy a config
 to a run-specific record and capture the dataset manifest hash before launch.
@@ -16,3 +18,5 @@ to a run-specific record and capture the dataset manifest hash before launch.
 The 768-token V0 configs use the deterministic
 `data/processed/length_views/v0-768` view. It excludes complete chat sequences
 that MLX-LM would truncate; the 1024 config uses the full V0 stage.
+The selected V1 config uses the same complete-record rule at
+`data/processed/length_views/main-768`.

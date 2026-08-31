@@ -1,0 +1,22 @@
+model: models/base-qwen3-1.7b-4bit
+data: data/processed/length_views/main-768
+train: true
+fine_tune_type: lora
+seed: 42
+num_layers: 16
+batch_size: 1
+grad_accumulation_steps: 8
+iters: 19255
+val_batches: 200
+learning_rate: 0.00001
+steps_per_report: 100
+steps_per_eval: 1000
+save_every: 1000
+adapter_path: models/adapters/v1-selected-l16-r8-768
+max_seq_length: 768
+grad_checkpoint: true
+mask_prompt: true
+lora_parameters:
+  rank: 8
+  dropout: 0.0
+  scale: 20.0
