@@ -47,3 +47,82 @@ temperature zero, thinking disabled, the frozen system prompt, and resumable
 content-free progress logs. Pass `--resume` after an interrupted run.
 
 Generated predictions and reports remain local under `evaluation/results/`.
+
+## Main checkpoint selection
+
+Compare the final, 19,000, and 18,000 main checkpoints on the frozen smoke
+**validation** split (`data/processed/stages/smoke/valid.jsonl`, 100 records).
+Its SHA-256 is
+`49f1df7ba0826f913a364aebf155441a7e5e58b574adb212ee4dec59a2d14042`.
+Rank the three reports with `compare_evaluations.py` using the approved exact
+recall-first order. This is a small validation screen; rare-label results have
+limited support. Do not use subsequent test results to switch checkpoints.
+
+Evaluate the selected checkpoint on the original frozen **2,000-record test**.
+Then reuse those predictions for the 1,924-record `main-768` view. Training at
+768 tokens does not impose that input limit on inference. The filtered view
+omits all 76 synthetic long-context test examples, so it is insufficient as the
+sole quality report.
+
+Earlier V0 architecture comparisons used nested test subsets. Report that
+exposure explicitly and additionally score the 1,500 records outside V0 test:
+
+```bash
+python scripts/evaluation/partition_test.py \
+  --dataset data/processed/test.jsonl \
+  --previously-used-dataset data/processed/stages/v0/test.jsonl \
+  --expected-dataset-sha256 eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f \
+  --output-dir evaluation/results/v1-test-exposure
+```
+
+The two views are disjoint and exhaustive, preserve complete records, and have
+checksummed manifests. `not_previously_used.jsonl` means not used in prior
+adapter comparisons; it is not a pristine holdout because earlier baselines
+were evaluated across the full test. Use `filter_predictions.py` and
+`evaluate_predictions.py` to score the same saved generations on each view.
+
+To report the long examples excluded from the length view separately, use:
+
+```bash
+python scripts/evaluation/partition_test.py \
+  --dataset data/processed/test.jsonl \
+  --reference-dataset data/processed/length_views/main-768/test.jsonl \
+  --partition-role length_filter \
+  --expected-dataset-sha256 eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f \
+  --output-dir evaluation/results/v1-test-length-views
+```
+
+This produces `retained.jsonl` and `excluded.jsonl`; the latter contains 20
+positive and 56 negative long-context examples. The command partitions by
+existing IDs and preserves record content; it does not retokenize the data.
+
+## Error review
+
+```bash
+python scripts/evaluation/analyze_errors.py \
+  --dataset data/processed/test.jsonl \
+  --predictions evaluation/results/<selected-run>/predictions.jsonl \
+  --expected-dataset-sha256 eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f \
+  --output-dir evaluation/results/<selected-run>/error-analysis
+```
+
+The report groups every exact false negative and false positive by label and
+suspected cause, with counts reconciled against the evaluator. Cause labels
+are review heuristics; they do not establish whether a model or annotation is
+wrong. It also records invalid-schema documents, including negatives: strict
+scoring discards malformed predictions, which can otherwise make a low
+negative false-positive rate misleading.
+
+Seed 42, per-group nominations, a global document cap, and input/output hashes
+make the local review bundle reproducible. Source text, gold spans, and model
+responses appear only in the ignored review JSONL. Inspect that local file
+before final adapter approval.
+
+## macOS local-file availability
+
+If iCloud has offloaded project or virtual-environment files, restore them
+before running inference. Offloaded bytecode can also delay Python startup.
+A temporary cache outside the synced Documents folder can be selected with
+`python -X pycache_prefix=/private/tmp/local-pii-redactor-pycache ...`.
+This only changes Python's bytecode-cache location; the model, dataset, and
+evaluation settings remain the ones recorded in the run configuration.

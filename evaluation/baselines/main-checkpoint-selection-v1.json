@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "purpose": "Select a main checkpoint on validation task metrics before testing the selected weights",
+  "training_run": "training/runs/v1-selected-l16-r8-768/manifest.json",
+  "candidates": {
+    "final": {
+      "iteration": 19255,
+      "adapter": "models/adapters/v1-selected-l16-r8-768-final",
+      "weights_sha256": "26fb0a7e30f60782d03bd4c14e7bf094d410ba5cc5f89624061d399855e7ec0c"
+    },
+    "ckpt19000": {
+      "iteration": 19000,
+      "adapter": "models/adapters/v1-selected-l16-r8-768-ckpt19000",
+      "weights_sha256": "a2458e1c67949ac6d70b676ea9d727b92f7e643acce19c0157c32aa0d735bbac"
+    },
+    "ckpt18000": {
+      "iteration": 18000,
+      "adapter": "models/adapters/v1-selected-l16-r8-768-ckpt18000",
+      "weights_sha256": "49b13a06d4746a3e563b1eaf46c18eeec7682d45d49f477e2230d8a9f0d3c594"
+    }
+  },
+  "selection_dataset": {
+    "path": "data/processed/stages/smoke/valid.jsonl",
+    "sha256": "49f1df7ba0826f913a364aebf155441a7e5e58b574adb212ee4dec59a2d14042",
+    "records": 100,
+    "negative_records": 25,
+    "gold_entities": 246,
+    "limitation": "Small validation screen with sparse support for some labels; not a statistical claim of superiority"
+  },
+  "selection_order": [
+    "micro exact recall",
+    "complete-document recall",
+    "micro exact precision",
+    "schema validity",
+    "micro exact F1",
+    "lower PII-free false-positive rate"
+  ],
+  "generation": {"seed": 42, "temperature": 0.0, "enable_thinking": false, "max_tokens": 384},
+  "selected_only_test": {
+    "path": "data/processed/test.jsonl",
+    "sha256": "eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f",
+    "records": 2000,
+    "report_views": ["full test", "main-768 retained 1924", "1500 outside prior V0 adapter comparisons", "76 excluded long-context records"],
+    "policy": "Reuse selected-model generations across views; do not change the selected checkpoint in response to test results"
+  }
+}
