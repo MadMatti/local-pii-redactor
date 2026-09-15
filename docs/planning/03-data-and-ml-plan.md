@@ -136,14 +136,18 @@ policy covers every observed source label.
   variables fixed.
 - [x] **ML-063 — Test sequence length 1024.** Measure truncation improvement,
   memory, throughput, and quality.
-- [ ] **ML-064 — Train the main candidate.** Use the winning small experiment on
-  the 15k–25k dataset.
-- [ ] **ML-065 — Evaluate checkpoints, not just the last step.** Rank checkpoints
-  using validation task metrics.
-- [ ] **ML-066 — Produce error-analysis samples.** Group false negatives and
-  false positives by class and suspected cause.
+- [x] **ML-064 — Train the main candidate.** Completed 19,255 microbatch
+  iterations on the main complete-record view on 2026-09-02.
+- [x] **ML-065 — Evaluate checkpoints, not just the last step.** Final, 19,000,
+  and 18,000 checkpoints ranked on 100 frozen validation records; checkpoint
+  19,000 selected by the approved recall-first rule.
+- [x] **ML-066 — Produce error-analysis samples.** All 2,000 test records
+  analyzed; 575 FNs and 557 FPs grouped by class and suspected cause, with
+  361 deterministic local review documents.
 - [ ] **ML-067 — Select the adapter.** Require human approval `H-045` and save a
-  model-selection decision record.
+  model-selection decision record. Evidence is ready in
+  [decision 0005](../decisions/0005-main-adapter-review.md); human approval
+  remains pending.
 
 Every experiment must record:
 

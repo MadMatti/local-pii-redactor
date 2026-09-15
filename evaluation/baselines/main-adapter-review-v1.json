@@ -1,0 +1,534 @@
+{
+  "error_review": {
+    "artifacts": {
+      "review_samples.jsonl": {
+        "bytes": 503665,
+        "contains_source_text": true,
+        "sha256": "829ab5cb3298373d863a31c8cb2304c0e41424a4bf4e84771ec322b451787644"
+      },
+      "statistics.json": {
+        "bytes": 22876,
+        "contains_source_text": false,
+        "sha256": "dba07a3a36071e9f01f4d39dc9bed7a55c8e8df64379c9e11031265f0b4b8cb8"
+      },
+      "summary.md": {
+        "bytes": 5186,
+        "contains_source_text": false,
+        "sha256": "916cd5ef552beece84aa97f5f9c984a3578d375944f5f247795f387f92da0302"
+      }
+    },
+    "cause_policy": "Heuristic groups require human review; invalid schema discards the entire prediction. Evaluator hallucinated_substrings includes absent text and exhausted occurrences.",
+    "heuristic_cause_counts": {
+      "FN": {
+        "boundary_mismatch": 250,
+        "invalid_schema": 12,
+        "missed_entity": 178,
+        "wrong_label": 135
+      },
+      "FP": {
+        "boundary_mismatch": 241,
+        "hallucinated_text": 8,
+        "overpredicted_occurrence": 4,
+        "spurious_entity": 169,
+        "wrong_label": 135
+      }
+    },
+    "manifest_sha256": "eb37d2ceffbea52b2faef8ad38c88767cc0d43a83b069d1128037076b67c7be2",
+    "negative_records_with_false_positives": 4,
+    "path": "evaluation/results/v1-selected-ckpt19000-full-test/error-analysis",
+    "sampling": {
+      "algorithm": "sha256_ranked_ids_then_sorted_group_round_robin_v1",
+      "max_review_records": 500,
+      "samples_per_group": 20,
+      "seed": 42,
+      "unit": "documents; selection reasons are capped nominations per group",
+      "unrepresented_groups": 0
+    },
+    "schema_invalid_gold_entities": 12,
+    "schema_invalid_negatives": 0,
+    "schema_invalid_records_at_recorded_token_cap": 3,
+    "totals": {
+      "fn": 575,
+      "fp": 557,
+      "records_with_issues": 483,
+      "review_records": 361,
+      "schema_invalid_records": 4
+    }
+  },
+  "full_test_generation": {
+    "completed_at_utc": "2026-09-14T18:41:26.223301+00:00",
+    "enable_thinking": false,
+    "generated_tokens": 99859,
+    "generation_tokens_per_second": 23.677236,
+    "max_tokens": 384,
+    "peak_memory_gb": 2.05859,
+    "records": 2000,
+    "seed": 42,
+    "temperature": 0,
+    "total_generation_seconds": 4217.510882
+  },
+  "limitations": [
+    "Only 100 validation records were used for checkpoint selection.",
+    "Prior V0 adapter comparisons used nested test subsets. The 1500-record view is outside those comparisons, not an untouched holdout.",
+    "The 76 long test records are synthetic, with 20 positives and 56 negatives; this is not a general document or chunking benchmark.",
+    "Test error inspection consumes this test for future development; freeze an independent holdout for subsequent tuning.",
+    "H-045 remains pending. No fusion, quantization, or deployment approval is implied."
+  ],
+  "protocol": "evaluation/baselines/main-checkpoint-selection-v1.json",
+  "review_date": "2026-09-15",
+  "schema_version": 1,
+  "selected": {
+    "adapter": "models/adapters/v1-selected-l16-r8-768-ckpt19000",
+    "adapter_config_sha256": "65b839954c2a212c0dc098e12959246c763cb3c1e4d0c88b2f252189e91f6740",
+    "adapter_fingerprint": "6a2dd70be65d590cf181d27bc8c1fd8b3271168ac0ed00a844fa901ed2b38018",
+    "iteration": 19000,
+    "model_fingerprint": "e6d52160526a5cdbfcc243f3d250aba3fa75b9cc9e4868fc0a5570e355d89743",
+    "name": "ckpt19000",
+    "weights_sha256": "a2458e1c67949ac6d70b676ea9d727b92f7e643acce19c0157c32aa0d735bbac"
+  },
+  "selection": {
+    "dataset_sha256": "49f1df7ba0826f913a364aebf155441a7e5e58b574adb212ee4dec59a2d14042",
+    "gold_entities": 246,
+    "limitation": "One extra exact true positive over either alternative; no statistical superiority claim. No checkpoint switch based on test results.",
+    "order": [
+      "micro exact recall",
+      "complete-document recall",
+      "micro exact precision",
+      "schema validity",
+      "micro exact F1",
+      "lower PII-free false-positive rate"
+    ],
+    "ranking": [
+      {
+        "complete_document_recall": 0.72,
+        "metrics_path": "evaluation/results/v1-ckpt19000-smoke-valid/metrics.json",
+        "micro_f1": 0.87576375,
+        "micro_precision": 0.87755102,
+        "micro_recall": 0.87398374,
+        "name": "ckpt19000",
+        "pii_free_false_positive_rate": 0,
+        "rank": 1,
+        "schema_valid_rate": 1
+      },
+      {
+        "complete_document_recall": 0.73333333,
+        "metrics_path": "evaluation/results/v1-ckpt18000-smoke-valid/metrics.json",
+        "micro_f1": 0.88065844,
+        "micro_precision": 0.89166667,
+        "micro_recall": 0.8699187,
+        "name": "ckpt18000",
+        "pii_free_false_positive_rate": 0,
+        "rank": 2,
+        "schema_valid_rate": 0.99
+      },
+      {
+        "complete_document_recall": 0.72,
+        "metrics_path": "evaluation/results/v1-final-smoke-valid/metrics.json",
+        "micro_f1": 0.88612836,
+        "micro_precision": 0.90295359,
+        "micro_recall": 0.8699187,
+        "name": "final",
+        "pii_free_false_positive_rate": 0,
+        "rank": 3,
+        "schema_valid_rate": 1
+      }
+    ],
+    "records": 100
+  },
+  "status": "selected_for_human_review_H-045_pending",
+  "training": {
+    "completed_at_utc": "2026-09-02T04:46:54.775041+00:00",
+    "duration_seconds": 40359.679,
+    "final_train_loss": 0.021,
+    "final_validation_loss": 0.015,
+    "git_commit": "8b5b48699867b1c11da3e9143cb8b27d8abd85bd",
+    "manifest": "training/runs/v1-selected-l16-r8-768/manifest.json",
+    "manifest_sha256": "9f024f1dfad172dba330d7c8c552c0b7f2b4da7b62994b73276771e34dfffec2",
+    "microbatch_iterations": 19255,
+    "optimizer_updates": 2406,
+    "peak_memory_gb": 2.485,
+    "return_code": 0,
+    "status": "completed",
+    "unapplied_final_microbatches": 7
+  },
+  "views": {
+    "full": {
+      "baseline_comparison_path": "evaluation/results/v1-main-full-comparison/comparison.json",
+      "comparison": [
+        {
+          "complete_document_recall": 0.752,
+          "micro_f1": 0.88975458,
+          "micro_precision": 0.89131707,
+          "micro_recall": 0.88819755,
+          "name": "selected-19000",
+          "pii_free_false_positive_rate": 0.008,
+          "schema_valid_rate": 0.998
+        },
+        {
+          "complete_document_recall": 0.18133333,
+          "micro_f1": 0.4196439,
+          "micro_precision": 0.5226087,
+          "micro_recall": 0.3505736,
+          "name": "base-qwen3",
+          "pii_free_false_positive_rate": 0.658,
+          "schema_valid_rate": 0.6405
+        },
+        {
+          "complete_document_recall": 0.136,
+          "micro_f1": 0.39942905,
+          "micro_precision": 0.51439951,
+          "micro_recall": 0.32646315,
+          "name": "regex",
+          "pii_free_false_positive_rate": 0.134,
+          "schema_valid_rate": 1
+        }
+      ],
+      "dataset": {
+        "path": "data/processed/test.jsonl",
+        "records": 2000,
+        "sha256": "eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f"
+      },
+      "documents": {
+        "complete_document_recall": 0.752,
+        "exact_document_match": 0.7585,
+        "pii_free_false_positive_rate": 0.008,
+        "pii_free_records": 500,
+        "pii_records": 1500
+      },
+      "metrics_path": "evaluation/results/v1-selected-ckpt19000-full-test/metrics.json",
+      "metrics_sha256": "5ba47bcbf88ce1472b7e5a68fbc22bd4f76dee629bd99ca6e8fe5faa751c35c9",
+      "micro": {
+        "f1": 0.88975458,
+        "fn": 575,
+        "fp": 557,
+        "precision": 0.89131707,
+        "recall": 0.88819755,
+        "tp": 4568
+      },
+      "per_class": {
+        "ADDRESS": {
+          "f1": 0.89182692,
+          "fn": 40,
+          "fp": 50,
+          "precision": 0.88123515,
+          "recall": 0.9026764,
+          "tp": 371
+        },
+        "BANK_ACCOUNT": {
+          "f1": 0.92105263,
+          "fn": 13,
+          "fp": 5,
+          "precision": 0.95454545,
+          "recall": 0.88983051,
+          "tp": 105
+        },
+        "CREDIT_CARD": {
+          "f1": 0.90358127,
+          "fn": 21,
+          "fp": 14,
+          "precision": 0.92134831,
+          "recall": 0.88648649,
+          "tp": 164
+        },
+        "CUSTOMER_ID": {
+          "f1": 0.86882453,
+          "fn": 27,
+          "fp": 50,
+          "precision": 0.83606557,
+          "recall": 0.90425532,
+          "tp": 255
+        },
+        "DATE_OF_BIRTH": {
+          "f1": 0.9281768,
+          "fn": 55,
+          "fp": 36,
+          "precision": 0.94230769,
+          "recall": 0.91446345,
+          "tp": 588
+        },
+        "EMAIL": {
+          "f1": 0.96988906,
+          "fn": 10,
+          "fp": 9,
+          "precision": 0.97142857,
+          "recall": 0.96835443,
+          "tp": 306
+        },
+        "EMPLOYEE_ID": {
+          "f1": 0.90733591,
+          "fn": 37,
+          "fp": 11,
+          "precision": 0.95528455,
+          "recall": 0.86397059,
+          "tp": 235
+        },
+        "IP_ADDRESS": {
+          "f1": 0.97637795,
+          "fn": 5,
+          "fp": 7,
+          "precision": 0.97254902,
+          "recall": 0.98023715,
+          "tp": 248
+        },
+        "MEDICAL_ID": {
+          "f1": 0.92814766,
+          "fn": 39,
+          "fp": 70,
+          "precision": 0.90956072,
+          "recall": 0.94751009,
+          "tp": 704
+        },
+        "NATIONAL_ID": {
+          "f1": 0.93670886,
+          "fn": 18,
+          "fp": 42,
+          "precision": 0.91358025,
+          "recall": 0.96103896,
+          "tp": 444
+        },
+        "PERSON_NAME": {
+          "f1": 0.73184358,
+          "fn": 248,
+          "fp": 232,
+          "precision": 0.73844419,
+          "recall": 0.72535991,
+          "tp": 655
+        },
+        "PHONE_NUMBER": {
+          "f1": 0.94466403,
+          "fn": 17,
+          "fp": 11,
+          "precision": 0.956,
+          "recall": 0.93359375,
+          "tp": 239
+        },
+        "USERNAME": {
+          "f1": 0.91286307,
+          "fn": 11,
+          "fp": 10,
+          "precision": 0.91666667,
+          "recall": 0.90909091,
+          "tp": 110
+        },
+        "VEHICLE_ID": {
+          "f1": 0.86746988,
+          "fn": 34,
+          "fp": 10,
+          "precision": 0.93506494,
+          "recall": 0.80898876,
+          "tp": 144
+        }
+      },
+      "predictions": {
+        "path": "evaluation/results/v1-selected-ckpt19000-full-test/predictions.jsonl",
+        "sha256": "7e45a7697918af8381557470c6788016df8b333e1cb2d2a079bc66bbf9b5ecab"
+      },
+      "relaxed_overlap_micro": {
+        "f1": 0.92423062,
+        "fn": 398,
+        "fp": 380,
+        "precision": 0.92585366,
+        "recall": 0.92261326,
+        "tp": 4745
+      },
+      "validity": {
+        "hallucinated_substrings": 12,
+        "json_valid_rate": 0.998,
+        "schema_valid_rate": 0.998,
+        "source_order_valid_rate": 0.9865
+      }
+    },
+    "long": {
+      "baseline_comparison_path": "evaluation/results/v1-main-long-comparison/comparison.json",
+      "comparison": [
+        {
+          "complete_document_recall": 0.95,
+          "micro_f1": 0.97435897,
+          "micro_precision": 1,
+          "micro_recall": 0.95,
+          "name": "selected-19000",
+          "pii_free_false_positive_rate": 0,
+          "schema_valid_rate": 1
+        },
+        {
+          "complete_document_recall": 0.85,
+          "micro_f1": 0.85,
+          "micro_precision": 0.85,
+          "micro_recall": 0.85,
+          "name": "regex",
+          "pii_free_false_positive_rate": 0,
+          "schema_valid_rate": 1
+        },
+        {
+          "complete_document_recall": 0.55,
+          "micro_f1": 0.70967742,
+          "micro_precision": 1,
+          "micro_recall": 0.55,
+          "name": "base-qwen3",
+          "pii_free_false_positive_rate": 0,
+          "schema_valid_rate": 0.52631579
+        }
+      ],
+      "dataset": {
+        "path": "evaluation/results/v1-test-length-views/excluded.jsonl",
+        "records": 76,
+        "sha256": "582da57fb8d4e94c14e0a551daddd273bab8bab8e55dd75c72bee1e10bbb4e81"
+      },
+      "documents": {
+        "complete_document_recall": 0.95,
+        "exact_document_match": 0.98684211,
+        "pii_free_false_positive_rate": 0,
+        "pii_free_records": 56,
+        "pii_records": 20
+      },
+      "metrics_path": "evaluation/results/v1-selected-ckpt19000-long-test/metrics.json",
+      "metrics_sha256": "d05b42d358afc45f92db31479491ca2c8400ce34bfb855a82fb13d7820f8cd8a",
+      "micro": {
+        "f1": 0.97435897,
+        "fn": 1,
+        "fp": 0,
+        "precision": 1,
+        "recall": 0.95,
+        "tp": 19
+      },
+      "predictions": {
+        "path": "evaluation/results/v1-selected-ckpt19000-long-test/predictions.jsonl",
+        "sha256": "8b51849818c95a40bd0613292382ae9c485785c5dfd8aa542beb3405ae8c9ecd"
+      },
+      "validity": {
+        "hallucinated_substrings": 0,
+        "json_valid_rate": 1,
+        "schema_valid_rate": 1,
+        "source_order_valid_rate": 1
+      }
+    },
+    "main-768": {
+      "baseline_comparison_path": "evaluation/results/v1-main-main-768-comparison/comparison.json",
+      "comparison": [
+        {
+          "complete_document_recall": 0.74932432,
+          "micro_f1": 0.88943201,
+          "micro_precision": 0.89091265,
+          "micro_recall": 0.88795628,
+          "name": "selected-19000",
+          "pii_free_false_positive_rate": 0.00900901,
+          "schema_valid_rate": 0.997921
+        },
+        {
+          "complete_document_recall": 0.17635135,
+          "micro_f1": 0.41859379,
+          "micro_precision": 0.52108171,
+          "micro_recall": 0.34979504,
+          "name": "base-qwen3",
+          "pii_free_false_positive_rate": 0.74099099,
+          "schema_valid_rate": 0.6450104
+        },
+        {
+          "complete_document_recall": 0.12635135,
+          "micro_f1": 0.39727501,
+          "micro_precision": 0.51233046,
+          "micro_recall": 0.32441929,
+          "name": "regex",
+          "pii_free_false_positive_rate": 0.1509009,
+          "schema_valid_rate": 1
+        }
+      ],
+      "dataset": {
+        "path": "data/processed/length_views/main-768/test.jsonl",
+        "records": 1924,
+        "sha256": "85a7d31018f8ca3eee04bf5952819b30224e8796012cb831fb40e0f6c5b96ecb"
+      },
+      "documents": {
+        "complete_document_recall": 0.74932432,
+        "exact_document_match": 0.74948025,
+        "pii_free_false_positive_rate": 0.00900901,
+        "pii_free_records": 444,
+        "pii_records": 1480
+      },
+      "metrics_path": "evaluation/results/v1-selected-ckpt19000-main-768/metrics.json",
+      "metrics_sha256": "05aaefb732a9aa42783a6a37d0c137a5d722ba4b1e780557b480d106d10c53f6",
+      "micro": {
+        "f1": 0.88943201,
+        "fn": 574,
+        "fp": 557,
+        "precision": 0.89091265,
+        "recall": 0.88795628,
+        "tp": 4549
+      },
+      "predictions": {
+        "path": "evaluation/results/v1-selected-ckpt19000-main-768/predictions.jsonl",
+        "sha256": "e5cfd8d4897d7946291cb2290ff6773613e2ee284d5d786faad0d2581809f308"
+      },
+      "validity": {
+        "hallucinated_substrings": 12,
+        "json_valid_rate": 0.997921,
+        "schema_valid_rate": 0.997921,
+        "source_order_valid_rate": 0.98596674
+      }
+    },
+    "not-previously-used": {
+      "baseline_comparison_path": "evaluation/results/v1-main-not-previously-used-comparison/comparison.json",
+      "comparison": [
+        {
+          "complete_document_recall": 0.74755556,
+          "micro_f1": 0.8885157,
+          "micro_precision": 0.89093264,
+          "micro_recall": 0.88611183,
+          "name": "selected-19000",
+          "pii_free_false_positive_rate": 0.00533333,
+          "schema_valid_rate": 0.998
+        },
+        {
+          "complete_document_recall": 0.18755556,
+          "micro_f1": 0.42605198,
+          "micro_precision": 0.53310105,
+          "micro_recall": 0.35480546,
+          "name": "base-qwen3",
+          "pii_free_false_positive_rate": 0.664,
+          "schema_valid_rate": 0.64066667
+        },
+        {
+          "complete_document_recall": 0.13955556,
+          "micro_f1": 0.40132618,
+          "micro_precision": 0.51814105,
+          "micro_recall": 0.32749291,
+          "name": "regex",
+          "pii_free_false_positive_rate": 0.12,
+          "schema_valid_rate": 1
+        }
+      ],
+      "dataset": {
+        "path": "evaluation/results/v1-test-exposure/not_previously_used.jsonl",
+        "records": 1500,
+        "sha256": "d923369005097f24b7279ebf475b14a309e846dde7a5bd0e5f3ca940714c9188"
+      },
+      "documents": {
+        "complete_document_recall": 0.74755556,
+        "exact_document_match": 0.75733333,
+        "pii_free_false_positive_rate": 0.00533333,
+        "pii_free_records": 375,
+        "pii_records": 1125
+      },
+      "metrics_path": "evaluation/results/v1-selected-ckpt19000-not-previously-used/metrics.json",
+      "metrics_sha256": "02acc8ec4758886fef21ab8440093144f2cfe0bdf3d5b5cbf8dc6d53f0b81def",
+      "micro": {
+        "f1": 0.8885157,
+        "fn": 442,
+        "fp": 421,
+        "precision": 0.89093264,
+        "recall": 0.88611183,
+        "tp": 3439
+      },
+      "predictions": {
+        "path": "evaluation/results/v1-selected-ckpt19000-not-previously-used/predictions.jsonl",
+        "sha256": "3a0c209bf6a85182d5789d3ae5b0337a4ddb760147d463d33f7b8e7cac99532b"
+      },
+      "validity": {
+        "hallucinated_substrings": 9,
+        "json_valid_rate": 0.998,
+        "schema_valid_rate": 0.998,
+        "source_order_valid_rate": 0.98733333
+      }
+    }
+  }
+}

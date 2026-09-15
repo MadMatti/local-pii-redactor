@@ -1,8 +1,9 @@
 # Local PII Redactor
 
 An offline-first project for fine-tuning, evaluating, quantizing, and deploying
-Qwen3-1.7B as a structured PII extractor. Dataset V1 was approved on 2026-08-28;
-the current workstream is frozen evaluation followed by staged training.
+Qwen3-1.7B as a structured PII extractor. Dataset V1 was approved on 2026-08-28.
+Main training and checkpoint evaluation are complete; final adapter approval
+is pending before fusion and quantization.
 
 ## Current state
 
@@ -15,6 +16,16 @@ the current workstream is frozen evaluation followed by staged training.
   are built with a 25% negative ratio.
 - All 14 canonical labels are present in every prepared split.
 - The strict prepared-data validator passes with zero errors.
+- The main run completed 19,255 microbatch iterations with 2.485 GB peak MLX
+  memory. Checkpoint 19,000 was selected on frozen validation task metrics.
+- On the full 2,000-record test, that checkpoint achieves 88.82% exact recall,
+  88.98% F1, 75.20% complete-document recall, and 99.80% schema validity.
+- A deterministic 361-document error-review bundle is ready locally. Names,
+  identifier confusion, and four invalid outputs still require review.
+
+See [the main-adapter review](docs/decisions/0005-main-adapter-review.md) for
+baseline comparisons, limitations, artifact paths, and the pending `H-045`
+decision. These results do not establish deployment readiness.
 
 Generated datasets, source snapshots, model weights, adapters, and evaluation
 results are intentionally ignored by Git.
@@ -47,8 +58,8 @@ docs/                   workflow documentation and detailed plans
 evaluation/             baselines and result artifacts
 models/                 local bases, adapters, fused models, and GGUFs
 scripts/data/            acquisition, inspection, build, and validation CLIs
-scripts/evaluation/      future quality evaluation commands
-scripts/model/           future training/conversion commands
+scripts/evaluation/      frozen scoring, checkpoint comparisons, and error review
+scripts/model/           training runner; conversion commands are still planned
 src/pii_redactor/        installable Python package
 tests/                   offline unit and opt-in integration tests
 training/configs/        versioned MLX-LM experiment configurations

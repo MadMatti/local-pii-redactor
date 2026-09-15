@@ -178,8 +178,11 @@ not a deployment candidate; V0 must demonstrate recall recovery.
 
 ### Coding tasks
 
-- [ ] ML-060 through ML-067: staged experiments, checkpoint evaluation, error
-  bundles, and selection record.
+- [x] ML-060 through ML-066: staged experiments, main training, validation
+  checkpoint evaluation, full frozen test, and deterministic error bundle.
+- [ ] ML-067: finalize adapter selection after human approval. The proposed
+  checkpoint and completed evidence are in
+  [decision 0005](../decisions/0005-main-adapter-review.md).
 
 ### Human tasks
 
@@ -196,6 +199,11 @@ not a deployment candidate; V0 must demonstrate recall recovery.
 
 **Gate G6:** Fine-tuned model materially improves the task. If not, return to
 Milestone 2 or 3 rather than continuing.
+
+Evidence as of 2026-09-15: the selected checkpoint has 0.8882 exact recall and
+0.8898 F1 on the full 2,000-record test, versus untouched-base 0.3506 recall
+and 0.4196 F1. The improvement condition is met. Gate G6 is still pending
+`H-045` and human error review; model packaging has not begun.
 
 ---
 

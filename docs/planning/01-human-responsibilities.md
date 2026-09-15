@@ -116,6 +116,9 @@ Suggested minimum review sample:
   smoke-run evidence before starting a long run.
 - [ ] **H-045 — Approve the final adapter.** Base the decision on frozen
   validation/test metrics and error analysis, not training loss alone.
+  Checkpoint 19,000 and the local review bundle are ready; see
+  [decision 0005](../decisions/0005-main-adapter-review.md). Approval has not
+  yet been recorded.
 - [ ] **H-046 — Approve Pi quantization.** Select Q4 or Q5 only after actual Pi
   memory, speed, temperature, and quality measurements.
 - [ ] **H-047 — Approve final chunking defaults.** Review recall, calls, latency,

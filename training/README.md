@@ -33,3 +33,21 @@ After the frozen comparison selects an architecture,
 `v0-selected-l16-r8-768-full.yaml` runs one pass over all 4,819 complete V0
 training records. It writes to a new adapter directory and does not resume or
 overwrite any screening adapter.
+
+## Completed main experiment
+
+`v1-selected-l16-r8-768.yaml` completed 19,255 microbatch iterations on the
+main complete-record view on 2026-09-02. Its manifest is local at
+`training/runs/v1-selected-l16-r8-768/manifest.json`. Do not rerun training into
+that existing run or adapter directory.
+
+The final, 19,000, and 18,000 checkpoints were compared on 100 frozen
+**validation** records. The recall-first rule selected checkpoint 19,000,
+preserved at `models/adapters/v1-selected-l16-r8-768-ckpt19000` with its own
+active weights and matching adapter configuration. The full 2,000-record test
+and three diagnostic views have now been scored without changing that choice.
+
+See [decision 0005](../docs/decisions/0005-main-adapter-review.md) for results,
+checksums, the small-screen limitation, and the MLX gradient-accumulation
+accounting caveat. Human approval `H-045` remains pending; no fusion or
+quantization has been performed.
