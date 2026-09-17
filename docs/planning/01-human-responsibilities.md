@@ -114,11 +114,10 @@ Suggested minimum review sample:
   entities near or across chunk boundaries.
 - [x] **H-044 — Approve the first real training configuration.** Review the
   smoke-run evidence before starting a long run.
-- [ ] **H-045 — Approve the final adapter.** Base the decision on frozen
+- [x] **H-045 — Approve the final adapter.** Base the decision on frozen
   validation/test metrics and error analysis, not training loss alone.
-  Checkpoint 19,000 and the local review bundle are ready; see
-  [decision 0005](../decisions/0005-main-adapter-review.md). Approval has not
-  yet been recorded.
+  Checkpoint 19,000 approved on 2026-09-15 for fusion/parity and quantization
+  trials; see [decision 0005](../decisions/0005-main-adapter-review.md).
 - [ ] **H-046 — Approve Pi quantization.** Select Q4 or Q5 only after actual Pi
   memory, speed, temperature, and quality measurements.
 - [ ] **H-047 — Approve final chunking defaults.** Review recall, calls, latency,

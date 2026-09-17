@@ -144,10 +144,9 @@ policy covers every observed source label.
 - [x] **ML-066 — Produce error-analysis samples.** All 2,000 test records
   analyzed; 575 FNs and 557 FPs grouped by class and suspected cause, with
   361 deterministic local review documents.
-- [ ] **ML-067 — Select the adapter.** Require human approval `H-045` and save a
-  model-selection decision record. Evidence is ready in
-  [decision 0005](../decisions/0005-main-adapter-review.md); human approval
-  remains pending.
+- [x] **ML-067 — Select the adapter.** Checkpoint 19,000 approved under `H-045`
+  on 2026-09-15; evidence and scope are recorded in
+  [decision 0005](../decisions/0005-main-adapter-review.md).
 
 Every experiment must record:
 
@@ -162,14 +161,22 @@ Every experiment must record:
 
 ## 8. Adapter fusion and GGUF conversion
 
-- [ ] **ML-070 — Fuse and dequantize.** Fuse the selected adapter into the MLX
-  base and write a floating-point checkpoint.
-- [ ] **ML-071 — Validate fused MLX.** Compare it with base-plus-adapter on a
-  parity subset and the full frozen evaluation if practical.
-- [ ] **ML-072 — Pin and build `llama.cpp` on the Mac.** Record its exact commit,
-  converter dependencies, compiler, and build options.
-- [ ] **ML-073 — Convert to BF16 GGUF.** Capture converter output and produce a
-  checksum.
+- [x] **ML-070 — Fuse and dequantize.** Checkpoint 19,000 produced 310 BF16
+  tensors (1,720,574,976 parameters). Exact approved tokenizer files were
+  restored with the generated serialization preserved; structural checks,
+  unchanged-weight hashes, and all 100 frozen prompt token-ID checks passed
+  on 2026-09-16. See [the packaging guide](../model-packaging.md).
+- [x] **ML-071 — Validate fused MLX.** The 100-record frozen validation gate
+  passed: identical exact recall, complete-document recall, and schema validity.
+  One extra MEDICAL_ID false positive is recorded. Full fused-MLX test generation
+  was not performed; do not reuse adapter test scores as fused-model scores.
+- [x] **ML-072 — Pin and build `llama.cpp` on the Mac.** Clean source revision,
+  converter dependencies, Apple Clang 17, CMake 4.4.3, build options, and 29
+  binary/library entries are recorded in the local toolchain manifest.
+- [x] **ML-073 — Convert to BF16 GGUF.** Verified 3,447,348,928-byte artifact,
+  310 tensors, and SHA-256 are recorded. The post-conversion reader import was
+  repaired without regenerating or changing the GGUF; original failure evidence
+  and the successful separate verification are both preserved.
 - [ ] **ML-074 — Validate chat metadata.** Confirm tokenizer, chat template,
   special tokens, EOS handling, context size, and thinking behavior.
 - [ ] **ML-075 — Run conversion-parity evaluation.** Compare selected-adapter,

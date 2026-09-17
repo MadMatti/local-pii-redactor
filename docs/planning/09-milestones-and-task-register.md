@@ -180,14 +180,14 @@ not a deployment candidate; V0 must demonstrate recall recovery.
 
 - [x] ML-060 through ML-066: staged experiments, main training, validation
   checkpoint evaluation, full frozen test, and deterministic error bundle.
-- [ ] ML-067: finalize adapter selection after human approval. The proposed
+- [x] ML-067: finalize adapter selection after human approval. The approved
   checkpoint and completed evidence are in
   [decision 0005](../decisions/0005-main-adapter-review.md).
 
 ### Human tasks
 
 - [ ] H-052 through H-054: authorize and supervise runs.
-- [ ] H-045: approve the selected adapter.
+- [x] H-045: checkpoint 19,000 approved for packaging trials on 2026-09-15.
 - [ ] H-070 through H-073: conduct model error analysis and approve corrections.
 
 ### Exit evidence
@@ -202,8 +202,9 @@ Milestone 2 or 3 rather than continuing.
 
 Evidence as of 2026-09-15: the selected checkpoint has 0.8882 exact recall and
 0.8898 F1 on the full 2,000-record test, versus untouched-base 0.3506 recall
-and 0.4196 F1. The improvement condition is met. Gate G6 is still pending
-`H-045` and human error review; model packaging has not begun.
+and 0.4196 F1. The improvement condition is met and `H-045` was explicitly
+approved on 2026-09-15. Gate G6 permits packaging trials; remaining detailed
+error-review and corrective-work tasks are not automatically marked complete.
 
 ---
 
@@ -213,7 +214,9 @@ and 0.4196 F1. The improvement condition is met. Gate G6 is still pending
 
 ### Coding tasks
 
-- [ ] ML-070 through ML-075: fusion, conversion, metadata, and parity.
+- [x] ML-070 through ML-072: verified fusion, frozen validation parity, and pinned native toolchain.
+- [x] ML-073: BF16 GGUF conversion and static metadata verification.
+- [ ] ML-074 through ML-075: native metadata/EOS checks and generation parity.
 - [ ] ML-080 through ML-086: Q8/Q5/Q4/imatrix generation and evaluation.
 
 ### Human tasks

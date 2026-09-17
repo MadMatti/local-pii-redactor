@@ -52,7 +52,7 @@ Generated predictions and reports remain local under `evaluation/results/`.
 
 The completed selection and full-test evidence are recorded in
 [decision 0005](decisions/0005-main-adapter-review.md). Checkpoint 19,000 is
-proposed for human approval; the commands below describe the frozen protocol.
+approved for packaging trials; the commands below describe the frozen protocol.
 
 Compare the final, 19,000, and 18,000 main checkpoints on the frozen smoke
 **validation** split (`data/processed/stages/smoke/valid.jsonl`, 100 records).

@@ -1,12 +1,12 @@
 # Decision 0005 — Main adapter selected for human review
 
-Status: proposed; final adapter approval `H-045` pending
+Status: approved for fusion/parity and quantization trials (`H-045`)
 
 Date: 2026-09-15
 
 ## Outcome
 
-Propose checkpoint **19,000** from the completed main experiment for the next
+Approve checkpoint **19,000** from the completed main experiment for the next
 fusion/parity stage. It was selected using frozen **validation** task metrics,
 before the selected weights were evaluated on the full 2,000-record test.
 
@@ -17,9 +17,11 @@ It is not a deployment-safety claim: 575 annotated PII occurrences were missed,
 372 of 1,500 PII-containing documents had at least one exact miss, and four
 responses were invalid.
 
-No fusion, GGUF conversion, quantization, new training, or dataset corrections
-are authorized by this proposed decision. Approval of the dataset or training
-experiment is not approval of this specific adapter.
+On 2026-09-15 the user explicitly approved this checkpoint in response to the
+request to proceed with fusion and quantization trials. This authorizes local
+fusion, parity evaluation, pinned GGUF tooling, conversion, and quantization
+experiments under the existing quality gates. It does not authorize deployment,
+new training, dataset corrections, or changes to the frozen evaluator.
 
 ## Training audit
 
@@ -255,10 +257,8 @@ Implementation verification: 75 offline tests passed, with the network test
 deselected; the repository artifact/secret guard passed. Generated source text
 and weights remain excluded from Git.
 
-The next human decision is `H-045`: approve this exact checkpoint for
-fusion/parity and quantization trials, or request a corrective development
-cycle first. Approval for packaging trials would not authorize deployment.
-If approved, next work is:
+Human decision `H-045` is approved as of 2026-09-15. Approval for packaging
+trials does not authorize deployment. Next work is:
 
 1. Check disk/memory headroom and fuse/dequantize into a new local directory.
 2. Verify fused-versus-adapter quality parity with frozen inputs and manifests.
@@ -266,5 +266,5 @@ If approved, next work is:
 4. Generate and compare quantized candidates under the approved recall-loss
    tolerance; choose Pi packaging only after actual device measurements.
 
-The required approval is still outstanding, so this work stops at the review
-gate without marking model selection or release complete.
+Adapter selection is complete. Packaging must still stop on unexplained
+quality regressions or unsafe resource pressure; release remains unapproved.

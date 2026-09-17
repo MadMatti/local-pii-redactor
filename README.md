@@ -2,8 +2,8 @@
 
 An offline-first project for fine-tuning, evaluating, quantizing, and deploying
 Qwen3-1.7B as a structured PII extractor. Dataset V1 was approved on 2026-08-28.
-Main training and checkpoint evaluation are complete; final adapter approval
-is pending before fusion and quantization.
+Main training and checkpoint evaluation are complete. Checkpoint 19,000 was
+approved on 2026-09-15 for fusion/parity and quantization trials.
 
 ## Current state
 
@@ -22,10 +22,17 @@ is pending before fusion and quantization.
   88.98% F1, 75.20% complete-document recall, and 99.80% schema validity.
 - A deterministic 361-document error-review bundle is ready locally. Names,
   identifier confusion, and four invalid outputs still require review.
+- Fused BF16 MLX passes the 100-record recall/validity parity gates, with one
+  additional MEDICAL_ID false positive recorded. BF16 GGUF conversion and static
+  metadata verification are complete; native generation parity gates quantization.
 
 See [the main-adapter review](docs/decisions/0005-main-adapter-review.md) for
-baseline comparisons, limitations, artifact paths, and the pending `H-045`
+baseline comparisons, limitations, artifact paths, and the approved `H-045`
 decision. These results do not establish deployment readiness.
+
+The [model-packaging guide](docs/model-packaging.md) documents approved fusion,
+tokenizer recovery, immutable toolchain evidence, and the generation-parity
+gates that must pass before conversion and quantization.
 
 Generated datasets, source snapshots, model weights, adapters, and evaluation
 results are intentionally ignored by Git.
@@ -59,7 +66,7 @@ evaluation/             baselines and result artifacts
 models/                 local bases, adapters, fused models, and GGUFs
 scripts/data/            acquisition, inspection, build, and validation CLIs
 scripts/evaluation/      frozen scoring, checkpoint comparisons, and error review
-scripts/model/           training runner; conversion commands are still planned
+scripts/model/           training, approved fusion/recovery, and toolchain checks
 src/pii_redactor/        installable Python package
 tests/                   offline unit and opt-in integration tests
 training/configs/        versioned MLX-LM experiment configurations

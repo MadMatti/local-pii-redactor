@@ -72,7 +72,7 @@
     "Prior V0 adapter comparisons used nested test subsets. The 1500-record view is outside those comparisons, not an untouched holdout.",
     "The 76 long test records are synthetic, with 20 positives and 56 negatives; this is not a general document or chunking benchmark.",
     "Test error inspection consumes this test for future development; freeze an independent holdout for subsequent tuning.",
-    "H-045 remains pending. No fusion, quantization, or deployment approval is implied."
+    "H-045 approved 2026-09-15 for local fusion/parity and quantization trials. Deployment remains unapproved."
   ],
   "protocol": "evaluation/baselines/main-checkpoint-selection-v1.json",
   "review_date": "2026-09-15",
@@ -135,7 +135,7 @@
     ],
     "records": 100
   },
-  "status": "selected_for_human_review_H-045_pending",
+  "status": "approved_for_packaging_trials_H-045_2026-09-15",
   "training": {
     "completed_at_utc": "2026-09-02T04:46:54.775041+00:00",
     "duration_seconds": 40359.679,

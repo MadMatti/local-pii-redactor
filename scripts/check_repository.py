@@ -21,6 +21,8 @@ FORBIDDEN_SUFFIXES = {
     ".safetensors",
 }
 FORBIDDEN_PREFIXES = (
+    ".venv-conversion/",
+    "vendor/llama.cpp/",
     "data/raw/",
     "data/intermediate/",
     "data/processed/full_source/",

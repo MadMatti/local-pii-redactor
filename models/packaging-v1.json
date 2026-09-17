@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "approval": {
+    "gate": "H-045",
+    "status": "approved",
+    "date": "2026-09-15",
+    "authority": "Explicit user approval of checkpoint 19000 for fusion and quantization trials",
+    "deployment_approved": false
+  },
+  "base": {
+    "path": "models/base-qwen3-1.7b-4bit",
+    "evaluation_fingerprint": "e6d52160526a5cdbfcc243f3d250aba3fa75b9cc9e4868fc0a5570e355d89743"
+  },
+  "adapter": {
+    "path": "models/adapters/v1-selected-l16-r8-768-ckpt19000",
+    "weights_sha256": "a2458e1c67949ac6d70b676ea9d727b92f7e643acce19c0157c32aa0d735bbac",
+    "config_sha256": "65b839954c2a212c0dc098e12959246c763cb3c1e4d0c88b2f252189e91f6740"
+  },
+  "fusion": {
+    "output": "models/fused/v1-ckpt19000-bf16",
+    "run_dir": "models/fused/v1-ckpt19000-bf16-run",
+    "minimum_free_bytes": 8589934592
+  },
+  "validation": {
+    "dataset": "data/processed/stages/smoke/valid.jsonl",
+    "sha256": "49f1df7ba0826f913a364aebf155441a7e5e58b574adb212ee4dec59a2d14042",
+    "reference_predictions": "evaluation/results/v1-ckpt19000-smoke-valid/predictions.jsonl"
+  },
+  "generation": {"seed": 42, "temperature": 0.0, "enable_thinking": false, "max_tokens": 384},
+  "llama_cpp": {
+    "repository": "https://github.com/ggml-org/llama.cpp.git",
+    "revision": "38a5b42d9a3e82e0a586bcd1caed121f36c87a73",
+    "path": "vendor/llama.cpp"
+  },
+  "quantization": {
+    "formats": ["Q8_0", "Q5_K_M", "Q4_K_M", "Q4_K_M-imatrix"],
+    "maximum_absolute_recall_drop": 0.01,
+    "maximum_absolute_complete_document_recall_drop": 0.01,
+    "calibration_path": "data/calibration/pii_calibration.txt",
+    "calibration_sha256": "a6c52c622df5e2c708d0ceaf9f156565a1086194f20d0f524eff4dc5f6bd6172"
+  }
+}

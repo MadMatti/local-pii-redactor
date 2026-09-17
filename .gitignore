@@ -1,4 +1,6 @@
 .venv/
+.venv-conversion/
+vendor/llama.cpp/
 __pycache__/
 *.pyc
 .pytest_cache/

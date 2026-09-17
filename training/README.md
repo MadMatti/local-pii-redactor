@@ -49,5 +49,5 @@ and three diagnostic views have now been scored without changing that choice.
 
 See [decision 0005](../docs/decisions/0005-main-adapter-review.md) for results,
 checksums, the small-screen limitation, and the MLX gradient-accumulation
-accounting caveat. Human approval `H-045` remains pending; no fusion or
-quantization has been performed.
+accounting caveat. Human approval `H-045` was recorded on 2026-09-15 for
+fusion/parity and quantization trials, not deployment.

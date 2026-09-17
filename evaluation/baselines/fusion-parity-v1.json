@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "status": "passed_frozen_smoke_validation_task_gates",
+  "approval_gate": "H-045",
+  "checkpoint": 19000,
+  "dataset_sha256": "49f1df7ba0826f913a364aebf155441a7e5e58b574adb212ee4dec59a2d14042",
+  "records": 100,
+  "positive_records": 75,
+  "negative_records": 25,
+  "gold_entities": 246,
+  "fused_weights_sha256": "c672a11d7214e2d1a2b4765950c9552575d206cf07764bdf3845417e0ac5b56d",
+  "reference_predictions_sha256": "b11a2644e2c7c9d6069de59066b4ac93f114c5ad1232f9712a65277b95bbf810",
+  "fused_predictions_sha256": "15f7f1f1a855eff445eb97b1b8daaea75682dc2b9f94f9d365bc8f5d97335282",
+  "tokenizer": {
+    "vocabulary_equal": true,
+    "special_tokens_equal": true,
+    "prompt_records_verified": 100,
+    "prompt_tokens_sha256": "0a6e124e710de8c78e7d9dbd3d7fc341528a08de818618eb457895cf6a8dee04",
+    "generated_serialization_preserved": true,
+    "approved_files_restored_byte_exact": true
+  },
+  "base_plus_adapter": {
+    "tp": 215, "fp": 30, "fn": 31,
+    "recall": 0.87398374, "precision": 0.87755102, "f1": 0.87576375,
+    "complete_document_recall": 0.72, "schema_valid_rate": 1.0,
+    "negative_false_positive_rate": 0.0, "exact_document_match": 0.73
+  },
+  "fused_bf16": {
+    "tp": 215, "fp": 31, "fn": 31,
+    "recall": 0.87398374, "precision": 0.87398374, "f1": 0.87398374,
+    "complete_document_recall": 0.72, "schema_valid_rate": 1.0,
+    "negative_false_positive_rate": 0.0, "exact_document_match": 0.73,
+    "generation_seconds": 491.792198, "generation_tokens_per_second": 9.870022,
+    "peak_mlx_memory_gb": 3.786906
+  },
+  "changed_outputs": 1,
+  "change_review": "One additional MEDICAL_ID prediction: a source-present 12-character identifier with no matching or overlapping gold entity. No reference entity was removed. The other 99 outputs are byte-identical. This is not bitwise model equivalence; the additional false positive remains a recorded defect.",
+  "limitations": [
+    "Only the 100-record frozen validation parity set was generated for fused MLX; the adapter's full-test scores must not be relabeled as fused-model scores.",
+    "No decline in exact recall, complete-document recall, or schema validity; precision and F1 decreased slightly because of the additional false positive.",
+    "These task-score gates do not establish deployment readiness or universal numerical equivalence.",
+    "Local timing is a Mac diagnostic, not a Raspberry Pi benchmark or a controlled cross-runtime speed comparison."
+  ]
+}
