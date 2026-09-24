@@ -23,8 +23,13 @@ approved on 2026-09-15 for fusion/parity and quantization trials.
 - A deterministic 361-document error-review bundle is ready locally. Names,
   identifier confusion, and four invalid outputs still require review.
 - Fused BF16 MLX passes the 100-record recall/validity parity gates, with one
-  additional MEDICAL_ID false positive recorded. BF16 GGUF conversion and static
-  metadata verification are complete; native generation parity gates quantization.
+  additional MEDICAL_ID false positive recorded. BF16 GGUF passes static and
+  native prompt/EOS checks and generation parity: 216/246 correct entities,
+  73.33% complete-document recall, and 100% schema validity on frozen validation.
+- All four quantization trials are complete. Q8 matches all 100 BF16 validation
+  outputs; Q5, Q4, and calibrated Q4 fail the approved quality gates. See
+  [the quantization review](docs/decisions/0006-gguf-quantization-review.md).
+  No quantized full-test evaluation or Pi deployment has been performed.
 
 See [the main-adapter review](docs/decisions/0005-main-adapter-review.md) for
 baseline comparisons, limitations, artifact paths, and the approved `H-045`

@@ -177,25 +177,36 @@ Every experiment must record:
   310 tensors, and SHA-256 are recorded. The post-conversion reader import was
   repaired without regenerating or changing the GGUF; original failure evidence
   and the successful separate verification are both preserved.
-- [ ] **ML-074 — Validate chat metadata.** Confirm tokenizer, chat template,
-  special tokens, EOS handling, context size, and thinking behavior.
-- [ ] **ML-075 — Run conversion-parity evaluation.** Compare selected-adapter,
-  fused-MLX, and BF16-GGUF metrics and example-level differences.
+- [x] **ML-074 — Validate chat metadata.** All 100 native prompt token sequences
+  match the approved tokenizer; template, EOS, context, and non-thinking checks
+  passed, including the sampled terminal token on each EOS-ended response.
+- [x] **ML-075 — Run conversion-parity evaluation.** BF16 GGUF passes the frozen
+  validation gates: 216 TP, 31 FP, 30 FN; 0.878049 recall, 0.733333 complete-document
+  recall, and 1.0 schema validity. One output adds a correct entity versus fused
+  MLX; this is task-score parity, not bitwise equivalence or full-test evidence.
 
 Stop if conversion causes an unexplained quality regression.
 
 ## 9. Deployment quantization
 
-- [ ] **ML-080 — Generate Q8_0.** Use the BF16 GGUF as the common parent.
-- [ ] **ML-081 — Generate Q5_K_M.** Record command, size, and checksum.
-- [ ] **ML-082 — Generate Q4_K_M.** Record command, size, and checksum.
-- [ ] **ML-083 — Generate an importance matrix.** Use only the separate
-  calibration corpus.
-- [ ] **ML-084 — Generate imatrix Q4_K_M.** Keep it distinct from ordinary Q4.
+- [x] **ML-080 — Generate Q8_0.** BF16-parent artifact: 1,834,426,048 bytes;
+  checksum and native/static evidence are preserved locally.
+- [x] **ML-081 — Generate Q5_K_M.** BF16-parent artifact: 1,257,879,232 bytes;
+  command, checksum, and static checks are recorded.
+- [x] **ML-082 — Generate Q4_K_M.** BF16-parent artifact: 1,107,408,576 bytes;
+  generated successfully but failed validation quality gates.
+- [x] **ML-083 — Generate an importance matrix.** Approved train-only corpus,
+  55 complete chunks, 196 covered layer weights, 392 finite paired tensors.
+- [x] **ML-084 — Generate imatrix Q4_K_M.** Separate 1,107,408,960-byte artifact;
+  verified calibration and common-parent provenance are recorded.
 - [ ] **ML-085 — Evaluate all formats identically.** Use the same prompt,
-  decoding, test samples, parser, and metrics.
+  decoding, test samples, parser, and metrics. All four frozen 100-record
+  validation comparisons are complete: only Q8 passes. Full quantized test
+  evaluation remains pending, so this broader task is not marked complete.
 - [ ] **ML-086 — Select Pi candidates.** Normally carry Q4 and Q5 to the Pi,
-  while retaining BF16/Q8 as quality references.
+  while retaining BF16/Q8 as quality references. Current Q4/Q5 candidates fail
+  the approved gates; review [decision 0006](../decisions/0006-gguf-quantization-review.md)
+  before changing the candidate scope or starting corrective experiments.
 
 ### Quantization report fields
 

@@ -216,13 +216,16 @@ error-review and corrective-work tasks are not automatically marked complete.
 
 - [x] ML-070 through ML-072: verified fusion, frozen validation parity, and pinned native toolchain.
 - [x] ML-073: BF16 GGUF conversion and static metadata verification.
-- [ ] ML-074 through ML-075: native metadata/EOS checks and generation parity.
-- [ ] ML-080 through ML-086: Q8/Q5/Q4/imatrix generation and evaluation.
+- [x] ML-074 through ML-075: all 100 native prompt/EOS checks and zero-drop generation parity.
+- [x] ML-080 through ML-084: all four quantizations and the audited importance matrix generated.
+- [x] ML-085 validation substep: all four formats evaluated on the same 100 frozen records.
+- [ ] ML-085 full-test substep and ML-086 candidate selection: Q8 passes; Q4/Q5 fail.
 
 ### Human tasks
 
-- [ ] Review disk requirements and authorize `llama.cpp` setup.
-- [ ] H-042: apply the approved quantization tolerance.
+- [x] Pinned local `llama.cpp` setup authorized under H-045; disk reserve enforced.
+- [x] H-042: applied the approved 0.01 recall/document-recall loss limits and no schema decline.
+- [ ] Review Q8-only passing result and approve the next candidate/test direction.
 
 ### Exit evidence
 
@@ -233,6 +236,11 @@ error-review and corrective-work tasks are not automatically marked complete.
 
 **Gate G7:** No unexplained conversion regression; selected candidates meet the
 quality threshold.
+
+Conversion passes, but Q4 and Q5 are ineligible under the current tolerances.
+Q8 matches BF16 on all 100 validation outputs. Full quantized test evaluation,
+Pi candidate selection, and G7 closure remain pending. See
+[decision 0006](../decisions/0006-gguf-quantization-review.md).
 
 ---
 

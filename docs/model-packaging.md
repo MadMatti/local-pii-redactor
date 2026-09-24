@@ -1,5 +1,11 @@
 # Approved model packaging trials
 
+All four native quantization trials are complete. **Only Q8_0 passes** the frozen
+validation gates; Q5, Q4, and calibrated Q4 fail. Read
+[decision 0006](decisions/0006-gguf-quantization-review.md) before proceeding to
+full-test selection or Pi work. Artifact creation must not be mistaken for
+deployment approval.
+
 Checkpoint 19,000 is approved for local packaging trials under `H-045`, not
 for deployment. The immutable inputs and tolerances are in
 [`models/packaging-v1.json`](../models/packaging-v1.json). Do not substitute the
@@ -193,7 +199,7 @@ and `verification.log`. It refuses an existing verification attempt. The native
 conversion was not repeated, and its original failed wrapper status was not
 silently rewritten.
 
-### Prepared GGUF evaluator
+### Native GGUF evaluation
 
 `scripts/evaluation/run_gguf_baseline.py` is the GGUF generation runner. It
 requires explicit model and dataset checksums and a recorded native toolchain.
@@ -207,8 +213,8 @@ the web UI and model downloads, and is terminated on completion or failure.
 The client ignores proxy settings and refuses redirects. Raw predictions remain
 local; stdout contains progress and aggregate metrics only. Resume requires
 identical model, data, tokenizer, binary, dependency, and implementation hashes.
-These safeguards have unit coverage; real GGUF validation is a separate pending
-step, not established by mocked transport tests.
+These safeguards have unit coverage and were exercised by the completed native
+BF16 validation run; they do not establish performance on Raspberry Pi.
 
 For the verified BF16 artifact:
 
@@ -228,6 +234,54 @@ MLX tokenizer, so an unexpected terminal token must not pass silently. Token
 IDs and native timing are saved locally; text-token counts and sampled-token
 counts are kept distinct because the latter include EOS.
 
+The native BF16 run completed all 100 records and passed the zero-drop gates
+against fused MLX: 216 TP, 31 FP, 30 FN; exact recall 0.878049, F1 0.876268,
+complete-document recall 0.733333, and schema validity 1.0. Exactly one output
+changed, adding one correct NATIONAL_ID entity without adding a false positive. All 100
+prompt token sequences matched the approved digest, and runtime/EOS checks
+passed. Predictions have SHA-256
+`6a345e73a9910e9144203d53f8aa27dbe2fd69cea8456a1d6ab3c92e8b6abd7c`.
+The local comparison is `evaluation/results/v1-gguf-bf16-smoke-valid-parity/parity.json`.
+No full-test BF16 run has been performed; adapter test scores do not transfer.
+
+### Guarded quantization commands
+
+```bash
+.venv/bin/python scripts/model/quantize_gguf.py --format Q8_0
+.venv/bin/python scripts/model/quantize_gguf.py --format Q5_K_M
+.venv/bin/python scripts/model/quantize_gguf.py --format Q4_K_M
+.venv/bin/python scripts/model/build_imatrix.py
+.venv/bin/python scripts/model/quantize_gguf.py --format Q4_K_M-imatrix
+```
+
+Each command refuses existing output, verifies the common BF16 parent and its
+native parity, checks the pinned toolchain, and preserves a 4 GiB disk reserve.
+Model output goes under `models/gguf/v1-ckpt19000-<format>/`; the exact hash and
+size are in its local `manifest.json`. Generate each candidate only once, then
+use that hash with `run_gguf_baseline.py` and a separate evaluation output path.
+Compare its predictions against **native BF16**, with both parity loss limits
+explicitly set to `0.01`. A completed quantization is not a passed quality gate.
+
+The importance-matrix wrapper re-audits the frozen corpus before execution,
+removes inherited native runtime overrides, uses context/batch 1024 and
+microbatch 512, and processes all complete chunks without perplexity or special
+token parsing. Any final partial chunk is unused. It checks paired F32 activation
+sum/count tensors for every dense layer weight, finite nonnegative values, full
+token counts, and unchanged BF16/calibration hashes. It does not calibrate the
+output embedding. Logs and the matrix remain local. Run GPU jobs sequentially
+on the 8 GB Mac.
+
+The completed calibration run covers 55 chunks (56,320 tokens), all 196 dense
+layer weights, and 392 paired tensors in a 2,094,624-byte matrix. Generation
+took 328.98 seconds. The matrix SHA-256 is
+`040bd2988b51e6c70c06863dd0b2a5c3f383a358d266099ae77a8f8b3a95f134`.
+During generation, the inspector was corrected to accept GGUF's omitted
+trailing singleton dimensions. Its startup and actual verification hashes are
+both preserved in the local `verification-provenance.json`; the matrix and
+original evidence were not rewritten. Future wrapper runs record both hashes
+directly. The final metadata report verifies all counts and actual inspector
+provenance before the matrix can be used for quantization.
+
 ### Calibration audit
 
 ```bash
@@ -242,6 +296,22 @@ training, which are allowed and explicitly reported. No dataset was rewritten.
 This is narrow synthetic train-style calibration, not an independent natural
 document corpus; no claim of optimal calibration representativeness is made.
 The local audit is `models/gguf/calibration-audit-v1/manifest.json`.
+
+### Recompute the aggregate comparison
+
+```bash
+.venv/bin/python scripts/model/report_quantization.py \
+  --output evaluation/baselines/quantization-v1-recheck.json
+```
+
+This requires every approved candidate to have completed its frozen validation
+run. It rechecks artifact, parent, matrix, prediction, toolchain, tokenizer, and
+runtime-configuration provenance, then recomputes the gates. It exports only
+aggregate metrics and hashes, never source text, entity values, or sample IDs.
+Existing reports are not overwritten. The committed initial reviewed report is
+[`quantization-v1.json`](../evaluation/baselines/quantization-v1.json).
+Native throughput is suppressed where server/client clocks disagree; do not
+use this report as a controlled speed or Pi benchmark.
 
 ## Tests
 
