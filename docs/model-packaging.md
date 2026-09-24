@@ -313,6 +313,59 @@ Existing reports are not overwritten. The committed initial reviewed report is
 Native throughput is suppressed where server/client clocks disagree; do not
 use this report as a controlled speed or Pi benchmark.
 
+## Approved Q8 full frozen test
+
+On 2026-09-24 the user approved advancing only the validation-passing Q8 artifact
+to the 2,000-record frozen test. The versioned protocol is
+[`q8-full-test-v1.json`](../models/q8-full-test-v1.json). Its model, checkpoint,
+decoding, prompt, and scorer are unchanged. All test prompts fit context 2048;
+the maximum prompt plus 384-token output allowance is 1268 tokens.
+
+Current run status (2026-09-24): deliberately paused at the 4 GiB disk reserve,
+with 221 complete predictions saved and 1,779 remaining. No full-test metrics
+have been published. Free additional space outside the project before resuming;
+do not delete model weights or prior experiment evidence. The local pause record
+is `evaluation/results/v1-gguf-q8_0-full-test/pause-20260924-disk-reserve.json`.
+Space recovered to about 9 GiB after the process stopped, but had dropped by
+about 5 GiB during execution. Allow additional headroom before restarting; the
+post-stop free-space reading alone does not show the active run's disk needs.
+
+The full run command is:
+
+```bash
+caffeinate -is .venv/bin/python scripts/evaluation/run_gguf_baseline.py \
+  --model models/gguf/v1-ckpt19000-q8_0/model-q8_0.gguf \
+  --expected-model-sha256 d421e331a5b9920ebf99eebf9902b4a2db535a3505b623042b6ab1f230e02858 \
+  --dataset data/processed/test.jsonl \
+  --expected-dataset-sha256 eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f \
+  --output-dir evaluation/results/v1-gguf-q8_0-full-test \
+  --max-tokens 384 --context 2048 --threads 4 --seed 42
+```
+
+`caffeinate` is scoped to this process and does not change persistent power
+settings. Keep AC power connected and preserve the 4 GiB disk reserve. If the
+run is interrupted, use the exact same command with `--resume`; saved complete
+predictions are reused only if configuration and checksums match. Never edit
+the generation runner or transport during a run or to force resume compatibility.
+
+After generation completes:
+
+```bash
+.venv/bin/python scripts/model/report_q8_test.py
+
+.venv/bin/python scripts/evaluation/analyze_errors.py \
+  --dataset data/processed/test.jsonl \
+  --predictions evaluation/results/v1-gguf-q8_0-full-test/predictions.jsonl \
+  --expected-dataset-sha256 eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f \
+  --output-dir evaluation/results/v1-gguf-q8_0-full-test-errors
+```
+
+The aggregate report is new-file-only; use `--output` with a fresh filename in
+`evaluation/baselines/` to recompute it later. The full-test reference is the
+previously selected MLX adapter, not a full-test BF16 run. Do not use test scores
+to reselect the quantization or claim full-test BF16/Q8 parity. No Pi transfer,
+retraining, changed quantization recipe, or deployment is authorized by this test.
+
 ## Tests
 
 ```bash

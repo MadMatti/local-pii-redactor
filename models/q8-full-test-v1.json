@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "approval": {
+    "date": "2026-09-24",
+    "status": "approved",
+    "authority": "User explicitly approved proceeding with the passing Q8 model's full frozen 2000-record test",
+    "deployment_approved": false,
+    "new_training_or_requantization_approved": false
+  },
+  "selection_basis": {
+    "dataset_partition": "validation",
+    "report": "evaluation/baselines/quantization-v1.json",
+    "report_sha256": "64010e07d33f4ffd6ff98ffe8362e6ed9efd2059591e91cc715f0edc0cceb640",
+    "passing_format": "Q8_0",
+    "rule": "Only the quantization passing all previously approved validation gates advances; test results must not change this selection"
+  },
+  "model": {
+    "path": "models/gguf/v1-ckpt19000-q8_0/model-q8_0.gguf",
+    "sha256": "d421e331a5b9920ebf99eebf9902b4a2db535a3505b623042b6ab1f230e02858",
+    "bytes": 1834426048,
+    "checkpoint": 19000
+  },
+  "test": {
+    "path": "data/processed/test.jsonl",
+    "sha256": "eca377c2185c87430bce78ba997789092e186af7c619230dd72b25508ee6b52f",
+    "records": 2000,
+    "positive_records": 1500,
+    "negative_records": 500,
+    "gold_entities": 5143
+  },
+  "generation": {
+    "seed": 42,
+    "temperature": 0.0,
+    "enable_thinking": false,
+    "max_tokens": 384,
+    "context": 2048,
+    "threads": 4,
+    "gpu_layers": "all",
+    "batch_size": 512,
+    "ubatch_size": 512,
+    "flash_attention": true,
+    "kv_dtype": "f16",
+    "cache_prompt": false
+  },
+  "implementation": {
+    "commit": "b7036cf",
+    "runner_sha256": "781084507007cd8c115715fe0323890f4e6c49cbf9b9c69d44a0c585a5907617",
+    "transport_sha256": "7ea66744c1e37394ea09c02b3900b056dbf13a6bbcb1ac9da54b00e2f1200c0b",
+    "llama_cpp_revision": "38a5b42d9a3e82e0a586bcd1caed121f36c87a73"
+  },
+  "context_preflight": {
+    "unique_records": 2000,
+    "maximum_prompt_tokens": 884,
+    "maximum_prompt_plus_output_budget": 1268,
+    "records_exceeding_context": 0
+  },
+  "comparison": {
+    "reference": "evaluation/results/v1-selected-ckpt19000-full-test/predictions.jsonl",
+    "reference_sha256": "7e45a7697918af8381557470c6788016df8b333e1cb2d2a079bc66bbf9b5ecab",
+    "purpose": "Descriptive full-test comparison with the selected MLX adapter; not test-based model selection or a BF16 quantization-parity claim",
+    "bf16_full_test_available": false
+  },
+  "output_dir": "evaluation/results/v1-gguf-q8_0-full-test",
+  "power_policy": "Use scoped caffeinate -is during generation while on AC; do not change persistent power settings"
+}

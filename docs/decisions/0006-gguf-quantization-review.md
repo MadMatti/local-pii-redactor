@@ -8,6 +8,26 @@ Reverified: 2026-09-24. All four comparisons reproduce exactly from unchanged
 local artifacts, and all 154 offline tests pass. Power was rechecked at 100%
 charge on AC; no additional generation or deployment was started.
 
+Subsequent approval: on 2026-09-24 the user explicitly approved the full frozen
+2,000-record Q8 test. The pre-test protocol is
+[`q8-full-test-v1.json`](../../models/q8-full-test-v1.json). This advances the
+validation-selected Q8 artifact to evaluation only; it does not approve Pi
+transfer, deployment, new training, or a changed compact-model experiment.
+
+Full-test progress: the approved run verified all 2,000 native prompt sequences,
+then was deliberately interrupted when free space fell below the 4 GiB reserve.
+There are 221 complete, unique, source-ordered predictions saved and 1,779 left.
+The private runner and its temporary sleep-prevention assertion stopped
+after the requested interrupt (exit 130). This is a resource pause, not a model
+quality result. Resume with unchanged inputs and `--resume` after space is freed;
+the frozen generation implementation has not been modified. The expanded
+offline suite passes all 174 tests.
+
+Free space recovered to about 9 GiB after stopping, close to its pre-run level;
+while running it had fallen by about 5 GiB. More headroom is needed before
+restarting the same workload. Free 5–10 GB outside the project, or reduce other
+memory-intensive activity, rather than deleting model or experiment artifacts.
+
 ## Outcome
 
 Q8_0 is the only quantized artifact that passes the approved frozen validation
