@@ -219,20 +219,22 @@ error-review and corrective-work tasks are not automatically marked complete.
 - [x] ML-074 through ML-075: all 100 native prompt/EOS checks and zero-drop generation parity.
 - [x] ML-080 through ML-084: all four quantizations and the audited importance matrix generated.
 - [x] ML-085 validation substep: all four formats evaluated on the same 100 frozen records.
-- [ ] ML-085 full-test substep and ML-086 candidate selection: Q8 passes; Q4/Q5 fail.
+- [ ] ML-085 full-test substep: approved Q8 test resource-paused at 1,238/2,000 records; Q4/Q5 remain ineligible.
+- [ ] ML-086: deployment candidate selection requires review of the completed evidence.
 
 ### Human tasks
 
 - [x] Pinned local `llama.cpp` setup authorized under H-045; disk reserve enforced.
 - [x] H-042: applied the approved 0.01 recall/document-recall loss limits and no schema decline.
-- [ ] Review Q8-only passing result and approve the next candidate/test direction.
+- [x] Review Q8-only validation result and approve its full frozen test (2026-09-24).
+- [ ] Review the completed Q8 full test and decide the deployment/next-experiment direction.
 
 ### Exit evidence
 
 - Fused MLX and BF16 GGUF manifests/checksums.
 - Conversion-parity report.
 - Quantization comparison report.
-- Q4 and Q5 Pi candidates.
+- A passing, explicitly approved Pi candidate; Q4 and Q5 currently fail.
 
 **Gate G7:** No unexplained conversion regression; selected candidates meet the
 quality threshold.

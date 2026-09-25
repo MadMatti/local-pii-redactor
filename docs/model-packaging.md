@@ -321,14 +321,37 @@ to the 2,000-record frozen test. The versioned protocol is
 decoding, prompt, and scorer are unchanged. All test prompts fit context 2048;
 the maximum prompt plus 384-token output allowance is 1268 tokens.
 
-Current run status (2026-09-24): deliberately paused at the 4 GiB disk reserve,
-with 221 complete predictions saved and 1,779 remaining. No full-test metrics
-have been published. Free additional space outside the project before resuming;
-do not delete model weights or prior experiment evidence. The local pause record
-is `evaluation/results/v1-gguf-q8_0-full-test/pause-20260924-disk-reserve.json`.
-Space recovered to about 9 GiB after the process stopped, but had dropped by
-about 5 GiB during execution. Allow additional headroom before restarting; the
-post-stop free-space reading alone does not show the active run's disk needs.
+Current status (2026-09-25): paused with **1,238/2,000** complete, unique,
+source-ordered predictions; **762 remain**. All saved EOS/context checks pass,
+and the earlier 716 predictions are byte-for-byte unchanged. No full-test
+metrics have been published. The first attempt stopped successfully at the
+4 GiB reserve after 221 records. During the second attempt, a tool approval
+failure prevented the requested stop; that process later ended for an unknown
+reason. It was confirmed absent before restarting. Do not describe the second
+attempt as a successful controlled pause.
+
+The third attempt began with about 12 GiB available and a separate process-owned
+watchdog. It successfully interrupted the runner after observing 3,349,323,776
+free bytes, below the 4 GiB reserve. The runner, native server, and scoped
+sleep-prevention process were confirmed stopped; shell exit status was 130
+(the Python subprocess return code was -2/SIGINT). This changed neither
+generation, prompts, nor the frozen implementation. Local lifecycle
+evidence is under `evaluation/results/v1-gguf-q8_0-full-test/` in
+`pause-20260924-disk-reserve.json`, `resume-20260924-attempt2.json`, and
+`resume-20260925-attempt3.json`. No model or experiment artifacts were deleted.
+The saved predictions SHA-256 is
+`a60a23d5a6082caac75c813226760fc19285ccb21dedadc031f574544c8f65d0`.
+Free space recovered to about 11 GiB after shutdown. That recovery is not
+additional headroom: do not cycle another identical resume solely because
+swap space was released. Before proceeding, free at least 10 GiB outside the
+project, or approve a separately versioned cache-disabled runtime with a fresh
+validation-parity check and a new full-test run. Preserve this partial run.
+
+The pinned server also has a global RAM prompt-state cache, separate from
+per-request `cache_prompt=false`; its default is 8,192 MiB. This is a plausible,
+not measured, contributor to memory/swap pressure. The frozen runtime has not
+been changed to disable it. A runtime change requires separately recorded
+configuration and validation, not bypassing the resume checks.
 
 The full run command is:
 

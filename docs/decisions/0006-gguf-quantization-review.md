@@ -14,19 +14,29 @@ Subsequent approval: on 2026-09-24 the user explicitly approved the full frozen
 validation-selected Q8 artifact to evaluation only; it does not approve Pi
 transfer, deployment, new training, or a changed compact-model experiment.
 
-Full-test progress: the approved run verified all 2,000 native prompt sequences,
-then was deliberately interrupted when free space fell below the 4 GiB reserve.
-There are 221 complete, unique, source-ordered predictions saved and 1,779 left.
-The private runner and its temporary sleep-prevention assertion stopped
-after the requested interrupt (exit 130). This is a resource pause, not a model
-quality result. Resume with unchanged inputs and `--resume` after space is freed;
-the frozen generation implementation has not been modified. The expanded
-offline suite passes all 174 tests.
+Full-test execution history: the first attempt verified all 2,000 native prompt
+sequences and stopped successfully at the 4 GiB disk reserve after 221 records
+(exit 130). A second attempt crossed the reserve again; its requested interrupt
+was blocked by a tool approval failure and did not execute. Its eventual exit
+reason is unknown. On 2026-09-25 no runner or native server remained, and all 716
+saved predictions passed completeness, uniqueness, source-order, token-budget,
+EOS, and frozen-artifact checks.
 
-Free space recovered to about 9 GiB after stopping, close to its pre-run level;
-while running it had fallen by about 5 GiB. More headroom is needed before
-restarting the same workload. Free 5–10 GB outside the project, or reduce other
-memory-intensive activity, rather than deleting model or experiment artifacts.
+With about 12 GiB free and renewed user authorization to resume, a third attempt
+started from those 716 records. Its separate watchdog successfully interrupted
+the runner at **1,238 records**, with **762 remaining**, after free space fell
+to 3,349,323,776 bytes. All saved predictions passed source-prefix, uniqueness,
+EOS, and context checks; the previous 716 are byte-for-byte unchanged. The runner,
+native server, and scoped sleep-prevention process are confirmed stopped.
+
+Free disk recovered to about 11 GiB after shutdown, so post-stop recovery must
+not be mistaken for new headroom. No weights or experiment evidence were deleted;
+generation code and configuration are unchanged. Resume is now gated on more
+external free space or approval for separately validated cache-disabled runtime
+configuration and a fresh full test. These are operational events, not quality
+results. The expanded offline suite passes all 174 tests.
+See the [packaging guide](../model-packaging.md#approved-q8-full-frozen-test)
+for lifecycle evidence and the unmodified resume procedure.
 
 ## Outcome
 
@@ -37,8 +47,9 @@ exact recall, complete-document recall, and schema validity.
 
 Do not promote a failed format, relax a threshold, or transfer a candidate to
 the Pi on the strength of file creation. Q8 remains a passing quality reference,
-not an approved deployment selection. No quantized full-test evaluation or Pi
-benchmark has been performed. Gate G7 remains open for candidate review.
+not an approved deployment selection. The quantized full test is partially
+complete and resource-paused; no completed full-test result or Pi benchmark is
+available yet. Gate G7 remains open for candidate review.
 
 ## Controlled comparison
 

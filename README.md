@@ -29,7 +29,9 @@ approved on 2026-09-15 for fusion/parity and quantization trials.
 - All four quantization trials are complete. Q8 matches all 100 BF16 validation
   outputs; Q5, Q4, and calibrated Q4 fail the approved quality gates. See
   [the quantization review](docs/decisions/0006-gguf-quantization-review.md).
-  No quantized full-test evaluation or Pi deployment has been performed.
+  The approved Q8 full frozen test is resource-paused at 1,238/2,000 records
+  (2026-09-25); no completed quantized full-test result or Pi deployment is
+  available yet. See the [resume requirements](docs/model-packaging.md#approved-q8-full-frozen-test).
 
 See [the main-adapter review](docs/decisions/0005-main-adapter-review.md) for
 baseline comparisons, limitations, artifact paths, and the approved `H-045`
