@@ -1,10 +1,10 @@
 # Approved model packaging trials
 
 All four native quantization trials are complete. **Only Q8_0 passes** the frozen
-validation gates; Q5, Q4, and calibrated Q4 fail. Read
-[decision 0006](decisions/0006-gguf-quantization-review.md) before proceeding to
-full-test selection or Pi work. Artifact creation must not be mistaken for
-deployment approval.
+validation gates; Q5, Q4, and calibrated Q4 fail. The approved Q8 full test is
+also complete. Read [decision 0006](decisions/0006-gguf-quantization-review.md)
+and [the full-test review](decisions/0007-q8-full-test-review.md) before any Pi
+work. Evaluation completion must not be mistaken for deployment approval.
 
 Checkpoint 19,000 is approved for local packaging trials under `H-045`, not
 for deployment. The immutable inputs and tolerances are in
@@ -321,31 +321,36 @@ to the 2,000-record frozen test. The versioned protocol is
 decoding, prompt, and scorer are unchanged. All test prompts fit context 2048;
 the maximum prompt plus 384-token output allowance is 1268 tokens.
 
-Current status (2026-09-25): paused with **1,238/2,000** complete, unique,
-source-ordered predictions; **762 remain**. All saved EOS/context checks pass,
-and the earlier 716 predictions are byte-for-byte unchanged. No full-test
-metrics have been published. The first attempt stopped successfully at the
-4 GiB reserve after 221 records. During the second attempt, a tool approval
-failure prevented the requested stop; that process later ended for an unknown
-reason. It was confirmed absent before restarting. Do not describe the second
-attempt as a successful controlled pause.
+Current status: **completed, 2,000/2,000 records, exit 0**, on 2026-09-25 at
+09:02 UTC. All coverage, checksum, prompt, EOS, and context checks passed. The
+earlier 1,238 predictions are byte-for-byte unchanged. Exact recall is 89.19%,
+F1 89.16%, complete-document recall 75.87%, and schema validity 99.80%.
+The [full-test review](decisions/0007-q8-full-test-review.md) describes the
+remaining errors, 353-document local review bundle, and deployment gate.
 
-The third attempt began with about 12 GiB available and a separate process-owned
-watchdog. It successfully interrupted the runner after observing 3,349,323,776
-free bytes, below the 4 GiB reserve. The runner, native server, and scoped
-sleep-prevention process were confirmed stopped; shell exit status was 130
-(the Python subprocess return code was -2/SIGINT). This changed neither
-generation, prompts, nor the frozen implementation. Local lifecycle
-evidence is under `evaluation/results/v1-gguf-q8_0-full-test/` in
-`pause-20260924-disk-reserve.json`, `resume-20260924-attempt2.json`, and
-`resume-20260925-attempt3.json`. No model or experiment artifacts were deleted.
-The saved predictions SHA-256 is
-`a60a23d5a6082caac75c813226760fc19285ccb21dedadc031f574544c8f65d0`.
-Free space recovered to about 11 GiB after shutdown. That recovery is not
-additional headroom: do not cycle another identical resume solely because
-swap space was released. Before proceeding, free at least 10 GiB outside the
-project, or approve a separately versioned cache-disabled runtime with a fresh
-validation-parity check and a new full-test run. Preserve this partial run.
+The completed predictions SHA-256 is
+`769b4bdab35027e85ed9ea1774ad84c2d40742b79c648d001fe7cb34dbd405f1`.
+The aggregate report is
+[`q8-full-test-v1.json`](../evaluation/baselines/q8-full-test-v1.json).
+
+Execution history is preserved under `evaluation/results/v1-gguf-q8_0-full-test/`:
+
+- `pause-20260924-disk-reserve.json`: successful first stop at 221 records.
+- `resume-20260924-attempt2.json`: a requested stop was blocked by tool approval;
+  the eventual exit reason is unknown. Later checks found 716 intact predictions
+  and no surviving runner. This was not a confirmed controlled pause.
+- `resume-20260925-attempt3.json`: the watchdog successfully stopped at 1,238
+  records when free disk reached 3,349,323,776 bytes, below the 4 GiB reserve.
+- `resume-20260925-attempt4.json`: after additional disk space and host AC were
+  confirmed, all 762 remaining records completed. The watchdog observed at least
+  12,090,568,704 free bytes and 50% battery. Runner/server/power assertion shutdown
+  was verified. The frozen generation configuration was not changed.
+
+No model or experiment artifacts were deleted. The earlier apparent AC reading
+was contradicted by the actual execution environment; its launch guard refused
+to start until host AC was confirmed. For future long runs, check power in the
+same environment as generation. Free-space recovery after stopping is not new
+headroom: preserve the 4 GiB reserve and avoid repeated restarts under disk pressure.
 
 The pinned server also has a global RAM prompt-state cache, separate from
 per-request `cache_prompt=false`; its default is 8,192 MiB. This is a plausible,
@@ -353,7 +358,8 @@ not measured, contributor to memory/swap pressure. The frozen runtime has not
 been changed to disable it. A runtime change requires separately recorded
 configuration and validation, not bypassing the resume checks.
 
-The full run command is:
+The original full-run command is retained for provenance; this run is already
+complete, so do not regenerate its predictions:
 
 ```bash
 caffeinate -is .venv/bin/python scripts/evaluation/run_gguf_baseline.py \
@@ -371,7 +377,7 @@ run is interrupted, use the exact same command with `--resume`; saved complete
 predictions are reused only if configuration and checksums match. Never edit
 the generation runner or transport during a run or to force resume compatibility.
 
-After generation completes:
+The following report commands were executed after generation completed:
 
 ```bash
 .venv/bin/python scripts/model/report_q8_test.py

@@ -219,7 +219,7 @@ error-review and corrective-work tasks are not automatically marked complete.
 - [x] ML-074 through ML-075: all 100 native prompt/EOS checks and zero-drop generation parity.
 - [x] ML-080 through ML-084: all four quantizations and the audited importance matrix generated.
 - [x] ML-085 validation substep: all four formats evaluated on the same 100 frozen records.
-- [ ] ML-085 full-test substep: approved Q8 test resource-paused at 1,238/2,000 records; Q4/Q5 remain ineligible.
+- [x] ML-085 full-test substep: approved Q8 test completed all 2,000 records on 2026-09-25; Q4/Q5 remain ineligible.
 - [ ] ML-086: deployment candidate selection requires review of the completed evidence.
 
 ### Human tasks
@@ -234,15 +234,18 @@ error-review and corrective-work tasks are not automatically marked complete.
 - Fused MLX and BF16 GGUF manifests/checksums.
 - Conversion-parity report.
 - Quantization comparison report.
+- Full frozen Q8 test report and deterministic 353-document local error-review bundle.
 - A passing, explicitly approved Pi candidate; Q4 and Q5 currently fail.
 
 **Gate G7:** No unexplained conversion regression; selected candidates meet the
 quality threshold.
 
 Conversion passes, but Q4 and Q5 are ineligible under the current tolerances.
-Q8 matches BF16 on all 100 validation outputs. Full quantized test evaluation,
+Q8 matches BF16 on all 100 validation outputs. Its full 2,000-record test is
+complete: 89.19% exact recall, 89.16% F1, and 99.80% schema validity. Error review,
 Pi candidate selection, and G7 closure remain pending. See
-[decision 0006](../decisions/0006-gguf-quantization-review.md).
+[decision 0006](../decisions/0006-gguf-quantization-review.md) and
+[decision 0007](../decisions/0007-q8-full-test-review.md).
 
 ---
 

@@ -31,12 +31,18 @@ native server, and scoped sleep-prevention process are confirmed stopped.
 
 Free disk recovered to about 11 GiB after shutdown, so post-stop recovery must
 not be mistaken for new headroom. No weights or experiment evidence were deleted;
-generation code and configuration are unchanged. Resume is now gated on more
-external free space or approval for separately validated cache-disabled runtime
-configuration and a fresh full test. These are operational events, not quality
-results. The expanded offline suite passes all 174 tests.
+generation code and configuration are unchanged. At that point, resume required
+more external free space or approval for separately validated runtime
+configuration. These were operational events, not quality results. The expanded
+offline suite passes all 174 tests.
 See the [packaging guide](../model-packaging.md#approved-q8-full-frozen-test)
 for lifecycle evidence and the unmodified resume procedure.
+
+Completion update (2026-09-25): after additional disk space and actual host AC
+were confirmed, the fourth attempt completed all 2,000 records with exit 0 and
+no configuration changes. All previous predictions are preserved. The final
+scores and next human decision are in
+[decision 0007](0007-q8-full-test-review.md).
 
 ## Outcome
 
@@ -47,9 +53,9 @@ exact recall, complete-document recall, and schema validity.
 
 Do not promote a failed format, relax a threshold, or transfer a candidate to
 the Pi on the strength of file creation. Q8 remains a passing quality reference,
-not an approved deployment selection. The quantized full test is partially
-complete and resource-paused; no completed full-test result or Pi benchmark is
-available yet. Gate G7 remains open for candidate review.
+not an approved deployment selection. The subsequently approved quantized full
+test is complete; no Pi benchmark has been performed. Gate G7 remains open for
+candidate and error review.
 
 ## Controlled comparison
 
@@ -171,9 +177,10 @@ not measured. No Pi speed, temperature, power, or memory claims are justified.
 
 1. Review these results and the failed-format local error bundles. Do not
    nominate Q4 or Q5 for deployment under the existing tolerance.
-2. Decide whether to advance the larger passing Q8 artifact to the full frozen
-   2,000-record test, or propose a separately approved compact-model experiment.
-   A Q8 test would assess generalization, not automatically approve Pi deployment.
+2. The larger passing Q8 artifact was approved for its full frozen test, now
+   completed. Review [decision 0007](0007-q8-full-test-review.md) before choosing
+   a Q8-only hardware benchmark or separately approved development experiment.
+   The full test does not automatically approve Pi deployment.
 3. Confirm stable external power before another long run. At final-trial startup
    the Mac reported AC attached but a discharging battery at 22%.
 4. Any changed calibration corpus, mixed-precision recipe, training, dataset,

@@ -19,3 +19,9 @@ after all 2,000 predictions are complete. Its protocol is
 data, runtime, prompt/EOS, and reference checksums before exporting aggregate
 metrics only. The adapter comparison is descriptive, not test-based selection
 or proof of full-test BF16/Q8 parity. Deployment remains unapproved.
+
+The approved full test completed on 2026-09-25. Its aggregate report is
+[`q8-full-test-v1.json`](../../evaluation/baselines/q8-full-test-v1.json);
+see [decision 0007](../../docs/decisions/0007-q8-full-test-review.md) for results,
+local error-review paths, and remaining gates. The reporter is new-file-only;
+use a fresh `--output` filename under `evaluation/baselines/` for a recomputation.
