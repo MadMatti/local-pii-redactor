@@ -34,6 +34,9 @@ approved on 2026-09-15 for fusion/parity and quantization trials.
   schema validity. A 353-document local error bundle is ready. See
   [the Q8 full-test review](docs/decisions/0007-q8-full-test-review.md).
   Pi transfer, hardware benchmarking, and deployment remain unapproved.
+- Read-only [Pi hardware diagnostics](deployment/raspberry_pi/README.md) are
+  implemented with offline tests. The Q8-only benchmark plan is prepared;
+  target hardware and benchmark/transfer approval are still required.
 
 See [the main-adapter review](docs/decisions/0005-main-adapter-review.md) for
 baseline comparisons, limitations, artifact paths, and the approved `H-045`

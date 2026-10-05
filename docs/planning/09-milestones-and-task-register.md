@@ -310,9 +310,11 @@ Milestones 5–7 using fake tokenizer/model clients.
 
 ### Coding tasks
 
-- [ ] PI-001 through PI-024: diagnostics, dependencies, build, and environment.
-- [ ] PI-030 through PI-044: transfer, checksum, and CLI validation.
-- [ ] PI-050 through PI-055: Q4/Q5 comparison and selection report.
+- [x] PI-002/PI-003: read-only diagnostics and architecture checks implemented with offline tests; target Pi run pending.
+- [ ] PI-001 and PI-010 through PI-024: resource policy, dependencies, build, and environment.
+- [x] PI-030: eligible Q8 candidate checksum published in the preparation plan.
+- [ ] PI-031 through PI-044: approved transfer, Pi-side checksum, and inference validation; failed formats excluded.
+- [ ] PI-050 through PI-055: approved Q8-only hardware benchmark and selection report.
 - [ ] QA-080 through QA-086: Pi benchmark framework.
 
 ### Human tasks
@@ -323,11 +325,15 @@ Milestones 5–7 using fake tokenizer/model clients.
 ### Exit evidence
 
 - Pi environment report.
-- Working Q4 and Q5 CLI inference.
+- Working inference for approved eligible candidates (currently only Q8).
 - Pi quality/performance/thermal comparison.
 - Approved production model and checksum.
 
 **Gate G10:** Selected model is stable and acceptable on the actual Pi.
+
+The [preparation plan](../../deployment/raspberry_pi/benchmark-plan.md) is draft.
+No target was contacted, artifact transferred, or benchmark/service started.
+Human hardware details and explicit benchmark/transfer authorization are pending.
 
 ---
 

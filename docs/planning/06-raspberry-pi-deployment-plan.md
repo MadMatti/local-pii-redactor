@@ -6,6 +6,13 @@ Deploy the selected GGUF on a Raspberry Pi 4 with reproducible configuration,
 local-only model serving, safe application exposure, automatic startup, and
 measured resource behavior.
 
+Current update (2026-10-05): only Q8_0 passed the quantization gates and completed
+its approved full test. Q4/Q5 hardware comparison is superseded unless a new
+candidate first passes a separately approved validation experiment. The
+[Q8-only preparation plan](../../deployment/raspberry_pi/benchmark-plan.md) is
+draft; target hardware, benchmark/transfer authority, and deployment approval
+remain pending. Local read-only diagnostics are implemented, not Pi-validated.
+
 ## 1. Hardware readiness
 
 Human owner tasks `H-023` and `H-024` must record:
@@ -19,11 +26,14 @@ Human owner tasks `H-023` and `H-024` must record:
 - hostname, user, and intended LAN exposure.
 
 - [ ] **PI-001 — Define minimum free resources.** Document disk space required
-  for two candidate models, application environment, build tree, and logs.
-- [ ] **PI-002 — Add a Pi diagnostic script.** Report architecture, OS, CPU,
-  cores, RAM, swap, disk, temperature capability, and throttling status.
-- [ ] **PI-003 — Verify 64-bit architecture.** Fail the deployment check unless
-  `uname -m` is compatible with the chosen build.
+  for the eligible model, approved rollback/transfer staging if needed,
+  application environment, build tree, bounded reports, and the safety reserve.
+- [x] **PI-002 — Add a Pi diagnostic script.** `scripts/deployment/diagnose_pi.py`
+  collects hardware/resource metadata and flags missing telemetry. No installs,
+  services, remote access, or model execution; offline fixture tests pass.
+- [x] **PI-003 — Implement the architecture check.** Require Linux, 64-bit ARM,
+  and 64-bit Python. Real target evidence remains required; inventory success
+  never implies deployment readiness.
 
 ## 2. System prerequisites and `llama.cpp`
 
@@ -53,8 +63,9 @@ Human owner tasks `H-023` and `H-024` must record:
 
 ## 4. Model transfer and verification
 
-- [ ] **PI-030 — Publish candidate checksums.** Record Mac-side SHA-256 for Q4
-  and Q5 candidates.
+- [x] **PI-030 — Publish eligible candidate checksum.** Q8 size/hash are pinned
+  in the preparation plan and full-test protocol. Pi-side verification is pending;
+  failed Q4/Q5 formats are not transfer candidates.
 - [ ] **PI-031 — Document secure transfer.** Use `scp`, `rsync` over SSH, or a
   trusted offline medium.
 - [ ] **PI-032 — Verify Pi-side checksums.** Do not benchmark a mismatched file.
@@ -65,9 +76,10 @@ Human owner tasks `H-023` and `H-024` must record:
 
 ## 5. Command-line inference gate
 
-- [ ] **PI-040 — Run Q4 CLI inference.** Start with context 2,048 and four
+- [ ] **PI-040 — Run approved Q8 CLI inference.** Start with context 2,048 and four
   threads; test positive, negative, repeated, and hard-negative examples.
-- [ ] **PI-041 — Run Q5 CLI inference.** Use identical prompts and settings.
+- [ ] **PI-041 — Deferred: additional eligible candidate inference.** Q5 is
+  excluded until a separately approved candidate passes the quality gates.
 - [ ] **PI-042 — Check structured behavior.** Confirm valid JSON-like extraction,
   absence of thinking output, and acceptable latency.
 - [ ] **PI-043 — Measure load and memory.** Record model load time, resident and
@@ -79,8 +91,8 @@ No server or UI work is considered deployable until CLI inference works.
 
 ## 6. Pi quantization selection
 
-- [ ] **PI-050 — Benchmark Q4 and Q5 on identical data.** Use warm-up plus
-  repeated measured runs.
+- [ ] **PI-050 — Benchmark only approved eligible candidates (currently Q8).**
+  Use warm-up plus repeated measured runs after target-specific approval.
 - [ ] **PI-051 — Record prompt and generation throughput.** Keep these separate.
 - [ ] **PI-052 — Run the frozen quality evaluation.** Do not choose using size or
   speed alone.
